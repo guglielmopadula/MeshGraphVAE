@@ -34,7 +34,7 @@ indices_c=np.arange(n_x*n_y*n_z)[mask.reshape(-1).astype(bool)]
 indices_c.sort()
 
 
-for i in trange(7):
+for i in trange(600):
     vpffd.array_mu_x=a*np.random.rand(*vpffd.array_mu_x.shape)*np.arange(n_z).reshape(1,1,-1)
     vpffd.array_mu_y=a*np.random.rand(*vpffd.array_mu_y.shape)*np.arange(n_z).reshape(1,1,-1)
     vpffd.array_mu_z=a*np.random.rand(*vpffd.array_mu_z.shape)*np.arange(n_z).reshape(1,1,-1)
