@@ -4,6 +4,7 @@ from cpffd import *
 a=meshio.read("data/Stanford_Bunny.stl")
 from tqdm import trange
 p=a.points.astype(float)
+np.random.seed(0)
 triangles=a.cells_dict["triangle"]
 def scale_normalize(points):
     minim=np.min(points,axis=0)
@@ -17,6 +18,10 @@ def restore(points,scale,minim):
 
 p,minim,scale=scale_normalize(p)
 
+print(cpffd.volume_x(p,triangles))
+
+print(np.mean(p,axis=0))
+
 n_x=3
 n_y=3
 n_z=3
@@ -25,14 +30,14 @@ mask[:,:,0]=0
 M=np.eye(np.sum(mask))
 indices_c=np.arange(n_x*n_y*n_z)[mask.reshape(-1).astype(bool)]
 indices_c.sort()
-vpffd=cpffd.VPFFD((n_x,n_y,n_z))
+vpffd=cpffd.DPFFD((n_x,n_y,n_z))
 a=0.01
-for i in trange(600):
+for i in trange(7):
     vpffd.array_mu_x=a*np.random.rand(*vpffd.array_mu_x.shape)*np.arange(n_z).reshape(1,1,-1)
     vpffd.array_mu_y=a*np.random.rand(*vpffd.array_mu_y.shape)*np.arange(n_z).reshape(1,1,-1)
     vpffd.array_mu_z=a*np.random.rand(*vpffd.array_mu_z.shape)*np.arange(n_z).reshape(1,1,-1)
-    pdef=vpffd.volume_ffd_adv(p,M,triangles,indices_c)
+    pdef=vpffd.double_ffd_adv(p,M,triangles,indices_c)
     pdef=restore(pdef,scale,minim)
-    meshio.write_points_cells("data/Volume_data/bunny_{}.stl".format(i),pdef,{"triangle":triangles})
+    meshio.write_points_cells("data/bunny_{}.stl".format(i),pdef,{"triangle":triangles})
 
 

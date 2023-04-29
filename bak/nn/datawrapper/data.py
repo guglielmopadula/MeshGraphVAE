@@ -30,8 +30,14 @@ class Data(LightningDataModule):
         return self.reduced_dimension
 
     def __init__(
-        self,batch_size,num_workers,num_train,num_test,reduced_dimension,string,use_cuda):
+        self,batch_size,num_workers,num_train,num_test,reduced_dimension,string,use_cuda,pool_vec_names,pool_adj_names):
         super().__init__()
+        self.pool_vec=[]
+        self.pool_adj=[]
+        for name in pool_vec_names:
+            self.pool_vec.append(torch.tensor(np.load(name)))
+        for name in pool_adj_names:
+            self.pool_adj.append(torch.tensor(np.load(name)))
         self.batch_size=batch_size
         self.num_workers=num_workers
         self.use_cuda=use_cuda

@@ -96,6 +96,7 @@ class VAE(LightningModule):
     def configure_optimizers(self):
         optimizer = torch.optim.AdamW(self.parameters(), lr=1e-3)
         return {"optimizer": optimizer}
+
     def sample_mesh(self,mean=None,var=None):
         device=self.decoder.decoder_base.pca._V.device
         self=self.to(device)

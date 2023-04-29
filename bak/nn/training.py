@@ -20,8 +20,6 @@ from pytorch_lightning import Trainer
 
 from pytorch_lightning.plugins.environments import SLURMEnvironment
 torch.set_float32_matmul_precision('high')
-from torch._inductor import config
-config.compile_threads = 1
 class DisabledSLURMEnvironment(SLURMEnvironment):
     def detect() -> bool:
         return False
@@ -43,22 +41,49 @@ AVAIL_GPUS=1 if torch.cuda.is_available() else 0
 
 LATENT_DIM=10
 REDUCED_DIMENSION=140
-NUM_TRAIN_SAMPLES=400
-NUM_TEST_SAMPLES=200
+NUM_TRAIN_SAMPLES=4#400
+NUM_TEST_SAMPLES=3#200
 BATCH_SIZE = 100
 MAX_EPOCHS={"AE":500,"BEGAN":500,"AAE":500,"VAE":500}
 SMOOTHING_DEGREE=1
 DROP_PROB=0.1
 
-data=Data(batch_size=BATCH_SIZE,
+
+data={"bar":Data(batch_size=BATCH_SIZE,
           num_train=NUM_TRAIN_SAMPLES,
           num_test=NUM_TEST_SAMPLES,
           num_workers=NUM_WORKERS,
           reduced_dimension=REDUCED_DIMENSION, 
-          string="./data_objects/rabbit_{}.ply",
-          use_cuda=use_cuda)
+          string="./data/Barycenter_data/rabbit_{}.stl",
+          use_cuda=use_cuda,pool_vec_names=["./graph_nn_preprocessing/subset1.npy",
+                                            "./graph_nn_preprocessing/subset2.npy",
+                                            "./graph_nn_preprocessing/subset3.npy",
+                                            "./graph_nn_preprocessing/subset4.npy"],
+                                            pool_adj_names=["./graph_nn_preprocessing/adj0.npy",
+                                                          "./graph_nn_preprocessing/adj1.npy",
+                                                          "./graph_nn_preprocessing/adj2.npy",
+                                                          "./graph_nn_preprocessing/adj3.npy",
+                                                          "./graph_nn_preprocessing/adj4.npy"]
+                                                          ),"vol":Data(batch_size=BATCH_SIZE,
+          num_train=NUM_TRAIN_SAMPLES,
+          num_test=NUM_TEST_SAMPLES,
+          num_workers=NUM_WORKERS,
+          reduced_dimension=REDUCED_DIMENSION, 
+          string="./data/Volume_data/rabbit_{}.stl",
+          use_cuda=use_cuda,pool_vec_names=["./graph_nn_preprocessing/subset1.npy",
+                                            "./graph_nn_preprocessing/subset2.npy",
+                                            "./graph_nn_preprocessing/subset3.npy",
+                                            "./graph_nn_preprocessing/subset4.npy"],
+                                            pool_adj_names=["./graph_nn_preprocessing/adj0.npy",
+                                                          "./graph_nn_preprocessing/adj1.npy",
+                                                          "./graph_nn_preprocessing/adj2.npy",
+                                                          "./graph_nn_preprocessing/adj3.npy",
+                                                          "./graph_nn_preprocessing/adj5.npy"]
+                                                          )}
 
 
+
+'''
 
 
 d={
@@ -116,6 +141,6 @@ if __name__ == "__main__":
     
     
     
-    
+    '''
     
     
