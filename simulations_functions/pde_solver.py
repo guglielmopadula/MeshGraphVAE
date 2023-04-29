@@ -13,9 +13,9 @@ from dolfinx import mesh
 import tetgen
 import meshio
 
-def calculate_simulation(name,barycenter,write=True):
+def calculate_simulation(name,bary,write=True):
     mymesh=meshio.read(name+".stl")
-    tgen = tetgen.TetGen(mesh.points,mesh.cells_dict["triangle"])
+    tgen = tetgen.TetGen(mymesh.points,mymesh.cells_dict["triangle"])
     nodes, elem = tgen.tetrahedralize()
     nodes=nodes-np.min(nodes,axis=0)
     gdim = 3
@@ -25,21 +25,17 @@ def calculate_simulation(name,barycenter,write=True):
     domain = ufl.Mesh(ufl.VectorElement("Lagrange", cell, degree))
     domain = mesh.create_mesh(MPI.COMM_WORLD, elem, nodes, domain)
     V = FunctionSpace(domain, ("CG", 1))
-    uD = fem.Function(V)
-    uD.interpolate(lambda x: np.exp(-((x[0]-bary[0])**2 + (x[1]-bary[1])**2+(x[2]-bary[2])**2)))
     tdim = domain.topology.dim
     fdim = tdim - 1
     domain.topology.create_connectivity(fdim, tdim)
-    boundary_facets = mesh.exterior_facet_indices(domain.topology)
-    bary=np.load("barycenter.npy")
-    boundary_dofs = fem.locate_dofs_topological(V, fdim, boundary_facets)
-    bc = fem.dirichletbc(uD, boundary_dofs)
+    boundary_facets = mesh.locate_entities_boundary(domain, dim=fdim,
+                                       marker=lambda x:np.isclose(x[2], 0.0))   
+    boundary_dofs = fem.locate_dofs_topological(V=V, entity_dim=fdim, entities=boundary_facets)
+    bc = fem.dirichletbc(value=ScalarType(0), dofs=boundary_dofs, V=V)
     u = ufl.TrialFunction(V)
     v = ufl.TestFunction(V) 
     f = fem.Function(V)
-    #f.interpolate(lambda x: np.exp(((x[0]-0.5)**2 + (x[1]-0.5)**2+(x[2]-0.5)**2)))
     f.interpolate(lambda x: np.exp(-((x[0]-bary[0])**2 + (x[1]-bary[1])**2+(x[2]-bary[2])**2)))
-    #f = fem.Constant(domain, ScalarType(-6))    
     a = ufl.dot(ufl.grad(u), ufl.grad(v)) * ufl.dx
     L = f * v * ufl.dx
     energy=fem.form(u* ufl.dx)
@@ -53,5 +49,8 @@ def calculate_simulation(name,barycenter,write=True):
     return value
 
 if __name__=="__main__":
-    bary=np.load("barycenter.npy")
-    print()
+    mymesh=meshio.read("Stanford_Bunny_red.stl")
+    print(np.min(mymesh.points))
+    bary=np.mean(mymesh.points,axis=0)
+    calculate_simulation("Stanford_Bunny_red",bary)
+
