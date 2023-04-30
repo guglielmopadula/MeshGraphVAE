@@ -36,7 +36,7 @@ class BEGAN(LightningModule):
             x_hat=self.decoder_base(self.encoder_base(x))
             return x_hat
          
-    def __init__(self,data_shape,pca,latent_dim,batch_size,drop_prob,barycenter,hidden_dim: int= 300,**kwargs):
+    def __init__(self,data_shape,pca,latent_dim,batch_size,drop_prob,barycenter,triangles,volume,points_triangles_matrix,hidden_dim: int= 300,**kwargs):
         super().__init__()
         self.pca=pca
         self.barycenter=barycenter
@@ -45,8 +45,11 @@ class BEGAN(LightningModule):
         self.batch_size=batch_size
         self.hidden_dim=hidden_dim
         self.data_shape = data_shape
-        self.generator = self.Generator(data_shape=self.data_shape, latent_dim=self.latent_dim,hidden_dim=self.hidden_dim,pca=self.pca,drop_prob=self.drop_prob,batch_size=self.batch_size,barycenter=self.barycenter)
-        self.discriminator = self.Discriminator(data_shape=self.data_shape, latent_dim=self.latent_dim,hidden_dim=self.hidden_dim,pca=self.pca,drop_prob=self.drop_prob,batch_size=self.batch_size,barycenter=self.barycenter)
+        self.triangles=triangles
+        self.volume=volume
+        self.point_triangles_matrix=points_triangles_matrix
+        self.generator = self.Generator(data_shape=self.data_shape, latent_dim=self.latent_dim,hidden_dim=self.hidden_dim,pca=self.pca,drop_prob=self.drop_prob,batch_size=self.batch_size,barycenter=self.barycenter,triangles=self.triangles,volume=self.volume,points_triangles_matrix=self.point_triangles_matrix)
+        self.discriminator = self.Discriminator(data_shape=self.data_shape, latent_dim=self.latent_dim,hidden_dim=self.hidden_dim,pca=self.pca,drop_prob=self.drop_prob,batch_size=self.batch_size,barycenter=self.barycenter,triangles=self.triangles,volume=self.volume,points_triangles_matrix=self.point_triangles_matrix)
         self.automatic_optimization=False
 
 

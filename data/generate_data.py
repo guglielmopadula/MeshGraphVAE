@@ -1,11 +1,11 @@
 import meshio
 import numpy as np
 from cpffd import *
-a=meshio.read("data/Stanford_Bunny.stl")
+a=meshio.read("data/Stanford_Bunny_red.ply")
 from tqdm import trange
 p=a.points.astype(float)
 np.random.seed(0)
-triangles=a.cells_dict["triangle"]
+triangles=np.load("data/tetras.npy")
 def scale_normalize(points):
     minim=np.min(points,axis=0)
     points=points-minim
@@ -17,27 +17,30 @@ def restore(points,scale,minim):
     return points*scale+minim
 
 p,minim,scale=scale_normalize(p)
-
-print(cpffd.volume_x(p,triangles))
-
-print(np.mean(p,axis=0))
-
 n_x=3
 n_y=3
 n_z=3
 mask=np.ones((n_x,n_y,n_z),dtype=int)
 mask[:,:,0]=0
+print(np.sum(mask))
 M=np.eye(np.sum(mask))
+latent=np.zeros((600,3,int(np.sum(mask))))
+
 indices_c=np.arange(n_x*n_y*n_z)[mask.reshape(-1).astype(bool)]
 indices_c.sort()
 vpffd=cpffd.DPFFD((n_x,n_y,n_z))
-a=0.01
-for i in trange(7):
+
+a=0.2
+for i in trange(600):
     vpffd.array_mu_x=a*np.random.rand(*vpffd.array_mu_x.shape)*np.arange(n_z).reshape(1,1,-1)
     vpffd.array_mu_y=a*np.random.rand(*vpffd.array_mu_y.shape)*np.arange(n_z).reshape(1,1,-1)
     vpffd.array_mu_z=a*np.random.rand(*vpffd.array_mu_z.shape)*np.arange(n_z).reshape(1,1,-1)
+    latent[i,0]=vpffd.array_mu_x[:,:,1:].reshape(-1)
+    latent[i,1]=vpffd.array_mu_y[:,:,1:].reshape(-1)
+    latent[i,2]=vpffd.array_mu_z[:,:,1:].reshape(-1)
     pdef=vpffd.double_ffd_adv(p,M,triangles,indices_c)
     pdef=restore(pdef,scale,minim)
-    meshio.write_points_cells("data/bunny_{}.stl".format(i),pdef,{"triangle":triangles})
+    meshio.write_points_cells("data/bunny_{}.ply".format(i),pdef,[])
 
 
+np.save("data/dffd_latent.npy",latent)

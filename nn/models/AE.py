@@ -9,9 +9,9 @@ import torch
 class AE(LightningModule):
     
     class Encoder(nn.Module):
-        def __init__(self, latent_dim, hidden_dim,data_shape,drop_prob,batch_size,l,adj):
+        def __init__(self, latent_dim, hidden_dim,data_shape,drop_prob,batch_size,pca):
             super().__init__()
-            self.encoder_base=Encoder_base(latent_dim=latent_dim, hidden_dim=hidden_dim, data_shape=data_shape,drop_prob=drop_prob,batch_size=batch_size,l=l,adj=adj)
+            self.encoder_base=Encoder_base(latent_dim=latent_dim, hidden_dim=hidden_dim, data_shape=data_shape,drop_prob=drop_prob,batch_size=batch_size,pca=pca)
             
         def forward(self,x):
             z=self.encoder_base(x)
@@ -19,28 +19,24 @@ class AE(LightningModule):
         
     class Decoder(nn.Module):
 
-        def __init__(self, latent_dim, hidden_dim, batch_size,data_shape,drop_prob,barycenter,volume,triangles,l,adj,points_triangles_matrix):
+        def __init__(self, latent_dim, hidden_dim, batch_size,data_shape,drop_prob,barycenter,pca):
             super().__init__()
-            self.decoder_base=Decoder_base(latent_dim=latent_dim, hidden_dim=hidden_dim, data_shape=data_shape,batch_size=batch_size,drop_prob=drop_prob,barycenter=barycenter,volume=volume,triangles=triangles,l=l,adj=adj,points_triangles_matrix=points_triangles_matrix)
+            self.decoder_base=Decoder_base(latent_dim=latent_dim, hidden_dim=hidden_dim, data_shape=data_shape,batch_size=batch_size,drop_prob=drop_prob,barycenter=barycenter,pca=pca)
 
         def forward(self,x):
             return self.decoder_base(x)
     
-    def __init__(self,data_shape,latent_dim,batch_size,drop_prob,barycenter,volume,triangles,l,adj,points_triangles_matrix,hidden_dim: int= 3,**kwargs):
+    def __init__(self,data_shape,latent_dim,batch_size,pca,drop_prob,barycenter,hidden_dim: int= 500,**kwargs):
         super().__init__()
         self.barycenter=barycenter
         self.drop_prob=drop_prob
-        self.triangles=triangles
-        self.volume=volume
-        self.points_triangles_matrix=points_triangles_matrix
-        self.l=l
-        self.adj=adj
+        self.pca=pca
         self.latent_dim=latent_dim
         self.batch_size=batch_size
         self.hidden_dim=hidden_dim
         self.data_shape = data_shape
-        self.encoder = self.Encoder(data_shape=self.data_shape, latent_dim=self.latent_dim,hidden_dim=self.hidden_dim,drop_prob=self.drop_prob,batch_size=self.batch_size,l=self.l,adj=self.adj)
-        self.decoder = self.Decoder(latent_dim=self.latent_dim,hidden_dim=self.hidden_dim ,data_shape=self.data_shape,drop_prob=self.drop_prob,batch_size=batch_size,barycenter=self.barycenter,volume=self.volume,triangles=self.triangles,adj=self.adj,l=self.l,points_triangles_matrix=self.points_triangles_matrix)
+        self.encoder = self.Encoder(data_shape=self.data_shape, latent_dim=self.latent_dim,hidden_dim=self.hidden_dim,drop_prob=self.drop_prob,batch_size=self.batch_size,pca=self.pca)
+        self.decoder = self.Decoder(latent_dim=self.latent_dim,hidden_dim=self.hidden_dim ,data_shape=self.data_shape,drop_prob=self.drop_prob,batch_size=batch_size,barycenter=self.barycenter,pca=self.pca)
         self.automatic_optimization=False
 
 
@@ -56,8 +52,7 @@ class AE(LightningModule):
         self.clip_gradients(opt, gradient_clip_val=0.1)
         opt.step()
         return loss
-    
-    
+
     def test_step(self, batch, batch_idx):
         x=batch
         z=self.encoder(x)
