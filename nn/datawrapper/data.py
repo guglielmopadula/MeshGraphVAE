@@ -42,6 +42,7 @@ class Data(LightningDataModule):
         self.barycenter=torch.tensor(barycenter,dtype=torch.float32)
         self.n_points=data.shape[0]
         self.data=torch.tensor(data,dtype=torch.float32)
+        self.data=self.data[:self.num_samples]
         self.pca=PCA(self.reduced_dimension)
         if use_cuda:
             self.pca.fit(self.data.reshape(self.num_samples,-1).cuda())

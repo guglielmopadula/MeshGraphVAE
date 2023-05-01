@@ -3,9 +3,8 @@ from models.basic_layers.lbr import LBR
 
 
 class Latent_Discriminator_base(nn.Module):
-    def __init__(self, latent_dim, hidden_dim,data_shape,drop_prob):
+    def __init__(self, latent_dim, hidden_dim,drop_prob):
         super().__init__()
-        self.data_shape=data_shape
         self.fc1_interior = LBR(latent_dim,hidden_dim,drop_prob)
         self.fc2_interior = LBR(hidden_dim,hidden_dim,drop_prob)
         self.fc3_interior = LBR(hidden_dim,hidden_dim,drop_prob)

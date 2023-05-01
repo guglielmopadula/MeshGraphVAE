@@ -1,6 +1,5 @@
 from pytorch_lightning import LightningModule
 from torch import nn
-from models.losses.losses import L2_loss,LI_loss,torch_mmd
 import torch
 import torch.autograd as autograd
 import numpy as np

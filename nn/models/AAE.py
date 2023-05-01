@@ -32,7 +32,7 @@ class AAE(LightningModule):
     class Discriminator(nn.Module):
         def __init__(self, latent_dim, hidden_dim,data_shape,drop_prob):
             super().__init__()
-            self.discriminator=Latent_Discriminator_base(latent_dim=latent_dim, data_shape=data_shape,hidden_dim=hidden_dim ,drop_prob=drop_prob)
+            self.discriminator=Latent_Discriminator_base(latent_dim=latent_dim,hidden_dim=hidden_dim ,drop_prob=drop_prob)
              
         def forward(self,x):
             x_hat=self.discriminator(x)
@@ -40,7 +40,7 @@ class AAE(LightningModule):
 
 
 
-    def __init__(self,data_shape,pca,latent_dim,batch_size,drop_prob,barycenter,volume,triangles,points_triangles_matrix,hidden_dim: int= 300, ae_hyp=0.999,**kwargs):
+    def __init__(self,data_shape,pca,latent_dim,batch_size,drop_prob,barycenter,hidden_dim: int= 500, ae_hyp=0.999,**kwargs):
         super().__init__()
         self.pca=pca
         self.ae_hyp=ae_hyp
@@ -50,11 +50,8 @@ class AAE(LightningModule):
         self.batch_size=batch_size
         self.hidden_dim=hidden_dim
         self.data_shape = data_shape
-        self.triangles=triangles
-        self.volume=volume
-        self.point_triangles_matrix=points_triangles_matrix
         self.encoder = self.Encoder(data_shape=self.data_shape, latent_dim=self.latent_dim,hidden_dim=self.hidden_dim,pca=self.pca,drop_prob=self.drop_prob,batch_size=self.batch_size)
-        self.decoder = self.Decoder(latent_dim=self.latent_dim,hidden_dim=self.hidden_dim ,data_shape=self.data_shape,drop_prob=self.drop_prob,pca=self.pca,batch_size=batch_size,barycenter=self.barycenter,triangles=self.triangles,volume=self.volume,points_triangles_matrix=self.point_triangles_matrix)
+        self.decoder = self.Decoder(latent_dim=self.latent_dim,hidden_dim=self.hidden_dim ,data_shape=self.data_shape,drop_prob=self.drop_prob,pca=self.pca,batch_size=batch_size,barycenter=self.barycenter)
         self.discriminator=self.Discriminator(data_shape=self.data_shape, latent_dim=self.latent_dim,hidden_dim=self.hidden_dim,drop_prob=drop_prob)
         self.automatic_optimization = False
 

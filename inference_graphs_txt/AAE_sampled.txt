@@ -1,0 +1,12 @@
+MMD Area distance ofAAE is 9.874402628895496e-06
+Percentage error AAE is 0.0003613146018081657
+Variance from prior of AAE is 73.76192187495414
+MMD Id distance ofAAE is 0.07672762870788574
+MMD Energy distance ofAAE is 3.454170283134772e-09
+MMD u distance ofAAE is 0.0586269659981733
+MMD Area distance ofAAE is 9.874402628895496e-06
+Percentage error AAE is 0.0003613146018081657
+Variance from prior of AAE is 73.76192187495414
+MMD Id distance ofAAE is 0.07672762870788574
+MMD Energy distance ofAAE is 3.454170283134772e-09
+MMD u distance ofAAE is 0.0586269659981733

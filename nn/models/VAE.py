@@ -29,7 +29,7 @@ class VAE(LightningModule):
             return self.decoder_base(x)
     
 
-    def __init__(self,data_shape,pca,latent_dim,batch_size,drop_prob,barycenter,volume,triangles,points_triangles_matrix,hidden_dim: int= 300, beta=0.000001,**kwargs):
+    def __init__(self,data_shape,pca,latent_dim,batch_size,drop_prob,barycenter,hidden_dim: int= 500, beta=0.000001,**kwargs):
         super().__init__()
         self.pca=pca
         self.barycenter=barycenter
@@ -38,14 +38,10 @@ class VAE(LightningModule):
         self.batch_size=batch_size
         self.beta=beta
         self.hidden_dim=hidden_dim
-        self.triangles=triangles
-        self.volume=volume
-        self.point_triangles_matrix=points_triangles_matrix
-
         self.log_scale=nn.Parameter(torch.tensor([0.0]))
         self.data_shape = data_shape
         self.encoder = self.Encoder(data_shape=self.data_shape, latent_dim=self.latent_dim,hidden_dim=self.hidden_dim,pca=self.pca,drop_prob=self.drop_prob,batch_size=self.batch_size)
-        self.decoder = self.Decoder(latent_dim=self.latent_dim,hidden_dim=self.hidden_dim ,data_shape=self.data_shape,drop_prob=self.drop_prob,pca=self.pca,batch_size=batch_size,barycenter=self.barycenter,triangles=self.triangles,volume=self.volume,points_triangles_matrix=self.point_triangles_matrix)
+        self.decoder = self.Decoder(latent_dim=self.latent_dim,hidden_dim=self.hidden_dim ,data_shape=self.data_shape,drop_prob=self.drop_prob,pca=self.pca,batch_size=batch_size,barycenter=self.barycenter)
         self.automatic_optimization=False
     
     def training_step(self, batch, batch_idx):

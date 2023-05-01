@@ -1,0 +1,24 @@
+MMD Area distance ofAE is 3.574342141732245e-05
+Percentage error AE is 0.00023146303984200763
+Variance from prior of AE is 74.20558826298999
+MMD Id distance ofAE is 0.05752873420715332
+MMD Energy distance ofAE is 2.1149650919483065e-08
+MMD u distance ofAE is 0.010733969546395272
+MMD Area distance ofAE is 3.574342141732245e-05
+Percentage error AE is 0.00023146303984200763
+Variance from prior of AE is 74.20558826298999
+MMD Id distance ofAE is 0.05752873420715332
+MMD Energy distance ofAE is 2.1149650919483065e-08
+MMD u distance ofAE is 0.010733969546395272
+MMD Area distance ofAE is 7.824024780944683e-06
+Percentage error AE is 0.00036057815004217754
+Variance from prior of AE is 72.32088508547085
+MMD Id distance ofAE is 0.0808870792388916
+MMD Energy distance ofAE is 3.934308878683623e-09
+MMD u distance ofAE is 0.06359464465018316
+MMD Area distance ofAE is 7.824024780944683e-06
+Percentage error AE is 0.00036057815004217754
+Variance from prior of AE is 72.32088508547085
+MMD Id distance ofAE is 0.0808870792388916
+MMD Energy distance ofAE is 3.934308878683623e-09
+MMD u distance ofAE is 0.06359464465018316

@@ -1,7 +1,7 @@
 import meshio
 import numpy as np
 from cpffd import *
-a=meshio.read("data/Stanford_Bunny_red.ply")
+a=meshio.read("data/Stanford_Bunny.ply")
 from tqdm import trange
 p=a.points.astype(float)
 np.random.seed(0)

@@ -30,6 +30,8 @@ class EncodedData(LightningDataModule):
         self.latent_dim=latent_dim
         self.data_train=data_train
         self.data_test=data_test
+        self.num_train=len(data_train)
+        self.num_test=len(data_test)
 
     
     def prepare_data(self):

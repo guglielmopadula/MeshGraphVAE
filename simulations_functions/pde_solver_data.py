@@ -24,12 +24,8 @@ def volume_2_x(mesh):
     return tmp.reshape(shape[:-3])
 
 
-def calculate_simulation(name,bary,write=True):
+def calculate_simulation(name,nodes,elem,bary,write=True):
     start=time.time()
-    mymesh=meshio.read(name+".stl")
-    print(volume_2_x(mymesh.points[mymesh.cells_dict["triangle"]]))
-    tgen = tetgen.TetGen(mymesh.points,mymesh.cells_dict["triangle"])
-    nodes, elem = tgen.tetrahedralize(quality=False,nobisect=False,fixedvolume=0.001,steinerleft=200000)
     nodes=nodes-np.min(nodes,axis=0)
     gdim = 3
     shape = "tetrahedron"
@@ -70,18 +66,19 @@ def calculate_simulation(name,bary,write=True):
 
 if __name__=="__main__":
     np.random.seed(0)
-    NUM_SAMPLES=600
-    mymesh=meshio.read("data/bunny_{}.stl".format(0))
-    print(np.min(mymesh.points))
-    bary=np.mean(mymesh.points,axis=0)
-    value,uh=calculate_simulation("data/bunny_{}".format(0),bary)
+    NUM_SAMPLES=300
+    points=np.load("data/data.npy").reshape(600,-1,3)
+    tets=np.load("data/tetras.npy")
+    bary=np.mean(points[0],axis=0)
+    value,uh=calculate_simulation("data/bunny_{}".format(0),points[0],tets,bary)
     energy_data=np.zeros(NUM_SAMPLES)
     u_data=np.zeros((NUM_SAMPLES,len(uh)))
     energy_data[0]=value
     u_data[0]=uh
 
+
     for i in trange(1,NUM_SAMPLES):
-        value,uh=calculate_simulation("data/bunny_{}".format(i),bary)
+        value,uh=calculate_simulation("data/bunny_{}".format(i),points[i],tets,bary)
         energy_data[i]=value
         u_data[i]=uh
 
