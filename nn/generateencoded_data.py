@@ -31,14 +31,15 @@ data=Data(batch_size=BATCH_SIZE,num_train=NUM_TRAIN_SAMPLES,
                                
 
 AE=torch.load("./nn/saved_models/AE.pt",map_location=torch.device('cpu'))
-
 data.data_train=data.data_train[:].reshape(NUM_TRAIN_SAMPLES//BATCH_SIZE,BATCH_SIZE,-1,3)
+
 data.data_test=data.data_test[:].reshape(NUM_TEST_SAMPLES//BATCH_SIZE,BATCH_SIZE,-1,3)
 
 encoded_data_train=torch.zeros(NUM_TRAIN_SAMPLES,LATENT_DIM).reshape(NUM_TRAIN_SAMPLES//BATCH_SIZE,BATCH_SIZE,LATENT_DIM)
 encoded_data_test=torch.zeros(NUM_TEST_SAMPLES,LATENT_DIM).reshape(NUM_TEST_SAMPLES//BATCH_SIZE,BATCH_SIZE,LATENT_DIM)
 
 AE.encoder(data.data_train[0])
+
 for i in range(NUM_TRAIN_SAMPLES//BATCH_SIZE):
     tmp=AE.encoder(data.data_train[i])
     encoded_data_train[i]=tmp.reshape(BATCH_SIZE,-1)

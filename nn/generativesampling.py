@@ -18,6 +18,7 @@ from models.NF import NF
 import trimesh
 import matplotlib.pyplot as plt
 import torch
+import dill
 import scipy
 from tqdm import trange
 import numpy as np
@@ -61,15 +62,19 @@ DROP_PROB=0.1
 NUMBER_SAMPLES=NUM_TEST_SAMPLES+NUM_TRAIN_SAMPLES
 
 
+with open("nn/saved_models/bayesdisc.pt", 'rb') as in_strm:
+    disc = dill.load(in_strm)
 
+disc.eval()
 d={
-  #AE: "AE",
-  #AAE: "AAE",
-  #VAE: "VAE", 
-  #BEGAN: "BEGAN",
-  #DM: "DM",
-  #EBM:"EBM"# 
-  NF:"NF" }
+  AE: "AE",
+  AAE: "AAE",
+  VAE: "VAE", 
+  BEGAN: "BEGAN",
+  DM: "DM",
+  EBM:"EBM",
+  NF:"NF" 
+  }
 
 data=Data(batch_size=BATCH_SIZE,num_train=NUM_TRAIN_SAMPLES,
           num_test=NUM_TEST_SAMPLES,
@@ -103,7 +108,7 @@ triangles=extract_surface(tets)
 data=data.data[:].cpu().numpy().reshape(NUMBER_SAMPLES,-1)
 moment_tensor_data=np.zeros((NUMBER_SAMPLES,3,3))
 area_data=np.zeros(NUMBER_SAMPLES)
-
+_=0
 print(data.reshape(NUMBER_SAMPLES,-1,3).shape)
 data2=data.copy()
 data2=data2.reshape(NUMBER_SAMPLES,-1,3)
@@ -134,9 +139,11 @@ for wrapper, name in d.items():
         error=error+np.min(np.linalg.norm(tmp-data2,axis=1))/np.linalg.norm(data2)/NUMBER_SAMPLES
         area_sampled[i]=area(tmp,triangles)
         temp[i]=tmp.reshape(-1)
-        #meshio.write_points_cells("./nn/inference_objects/"+name+"_{}.ply".format(i), tmp,[])
+        meshio.write_points_cells("./nn/inference_objects/"+name+"_{}.ply".format(i), tmp,[])
     moment_tensor_sampled=np.zeros((NUMBER_SAMPLES,3,3))
 
+    perc_pass=torch.sum(disc.predict([torch.tensor(temp.astype(np.float32)).reshape(NUMBER_SAMPLES,-1),_]))/NUMBER_SAMPLES
+    print("Percentage of passing samples of ", name, " is ", perc_pass.detach().numpy())
     print("Variance of ",name," is", np.sum(np.var(temp.reshape(NUMBER_SAMPLES,-1),axis=0)))
     np.save("nn/inference_objects/"+name+"_latent.npy",latent_space.detach().numpy())
     
@@ -145,7 +152,7 @@ for wrapper, name in d.items():
             moment_tensor_sampled[:,j,k]=np.mean(temp.reshape(NUMBER_SAMPLES,-1,3)[:,:,j]*temp.reshape(NUMBER_SAMPLES,-1,3)[:,:,k],axis=1)
     variance=np.sum(np.var(temp,axis=0))
     variance_data=np.sum(np.var(data2.reshape(NUMBER_SAMPLES,-1),axis=0))
-    mmd_data=mmd(pca.transform(torch.tensor(temp.astype(np.float32)).reshape(NUMBER_SAMPLES,-1)),pca.transform(torch.tensor(data2.astype(np.float32)).reshape(NUMBER_SAMPLES,-1)))
+    mmd_data=mmd(disc.compute_latent([torch.tensor(temp.astype(np.float32)).reshape(NUMBER_SAMPLES,-1),_]),disc.compute_latent([torch.tensor(data2.astype(np.float32)).reshape(NUMBER_SAMPLES,-1),_]))
     np.save("nn/geometrical_measures/moment_tensor_data.npy",moment_tensor_data)
     np.save("nn/geometrical_measures/moment_tensor_"+name+".npy",moment_tensor_sampled)
     print("Saved moments")
@@ -155,6 +162,7 @@ for wrapper, name in d.items():
     np.save("nn/geometrical_measures/variance_"+name+".npy",variance)
     np.save("nn/geometrical_measures/variance_data.npy",variance_data)
     print("Saved variances")
+    np.save("nn/geometrical_measures/perc_pass_"+name+".npy",perc_pass)
     np.save("nn/geometrical_measures/mmd_"+name+".npy",mmd_data)
     np.save("nn/geometrical_measures/rel_error_"+name+".npy",error)
     print("Saved error")

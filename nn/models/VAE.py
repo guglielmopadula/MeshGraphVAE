@@ -76,7 +76,6 @@ class VAE(LightningModule):
         z1_sampled = q_1.rsample()
         x_hat = self.decoder(z1_sampled)
         x_hat=x_hat.reshape(x.shape)
-
         loss=L2_loss(x_hat, x)
         reg=torch.distributions.kl_divergence(q_1, standard_1).mean()
         self.log("val_vae_loss", loss)
@@ -94,7 +93,7 @@ class VAE(LightningModule):
         return loss
 
     def configure_optimizers(self):
-        optimizer = torch.optim.AdamW(self.parameters(), lr=1e-3)
+        optimizer = torch.optim.AdamW(self.parameters(), lr=5e-4)
         return {"optimizer": optimizer}
 
     def sample_mesh(self,mean=None,var=None):

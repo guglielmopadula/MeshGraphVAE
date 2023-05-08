@@ -39,12 +39,12 @@ def calculate_simulation(name,nodes,elem,bary,write=True):
     tdim = domain.topology.dim
     fdim = tdim - 1
     domain.topology.create_connectivity(fdim, tdim)
-    boundary_facets = mesh.exterior_facet_indices(domain.topology)
-    boundary_dofs = fem.locate_dofs_topological(V, fdim, boundary_facets)
-    bc = fem.dirichletbc(uD, boundary_dofs)
-    #boundary_facets = mesh.locate_entities_boundary(domain, dim=fdim, marker=lambda x:np.isclose(x[2], 0.0))   
-    #boundary_dofs = fem.locate_dofs_topological(V=V, entity_dim=fdim, entities=boundary_facets)
-    #bc = fem.dirichletbc(value=ScalarType(0), dofs=boundary_dofs, V=V)
+    #boundary_facets = mesh.exterior_facet_indices(domain.topology)
+    #boundary_dofs = fem.locate_dofs_topological(V, fdim, boundary_facets)
+    #bc = fem.dirichletbc(uD, boundary_dofs)
+    boundary_facets = mesh.locate_entities_boundary(domain, dim=fdim, marker=lambda x:np.isclose(x[2], 0.0))   
+    boundary_dofs = fem.locate_dofs_topological(V=V, entity_dim=fdim, entities=boundary_facets)
+    bc = fem.dirichletbc(value=ScalarType(0), dofs=boundary_dofs, V=V)
     u = ufl.TrialFunction(V)
     v = ufl.TestFunction(V) 
     f = fem.Function(V)
@@ -65,7 +65,7 @@ def calculate_simulation(name,nodes,elem,bary,write=True):
     return value,u_val
 
 if __name__=="__main__":
-    name="NF"
+    name="VAE"
     np.random.seed(0)
     NUM_SAMPLES=300
     points=np.load("nn/inference_objects/"+name+".npy").reshape(NUM_SAMPLES,-1,3)

@@ -1,12 +1,7 @@
-MMD Area distance ofVAE is 1.8001694353841913e-05
-Percentage error VAE is 0.0003500678581379662
-Variance from prior of VAE is 64.96009225602899
-MMD Id distance ofVAE is 0.1084129810333252
-MMD Energy distance ofVAE is 2.9758986386241304e-09
-MMD u distance ofVAE is 0.07315922176459466
-MMD Area distance ofVAE is 1.8001694353841913e-05
-Percentage error VAE is 0.0003500678581379662
-Variance from prior of VAE is 64.96009225602899
-MMD Id distance ofVAE is 0.1084129810333252
-MMD Energy distance ofVAE is 2.9758986386241304e-09
-MMD u distance ofVAE is 0.07315922176459466
+MMD Area distance ofVAE is 0.00028932247068702566
+Percentage error VAE is 0.000270410869125044
+Variance from prior of VAE is 2.214144281781655
+MMD Id distance ofVAE is 0.03999999910593033
+MMD Energy distance ofVAE is 2.0014076795860092e-07
+MMD u distance ofVAE is 0.4886780597007583
+Percentage of passing samples of VAE is 1.0

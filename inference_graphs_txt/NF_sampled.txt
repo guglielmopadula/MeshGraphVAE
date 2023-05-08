@@ -1,18 +1,7 @@
-MMD Area distance ofNF is 9.878461124657179e-07
-Percentage error NF is 0.0003680488978473781
-Variance from prior of NF is 84.00816248997307
-MMD Id distance ofNF is 0.07472038269042969
-MMD Energy distance ofNF is 4.556641286512786e-09
-MMD u distance ofNF is 0.05591639307555685
-MMD Area distance ofNF is 9.878461124657179e-07
-Percentage error NF is 0.0003680488978473781
-Variance from prior of NF is 84.00816248997307
-MMD Id distance ofNF is 0.07472038269042969
-MMD Energy distance ofNF is 4.556641286512786e-09
-MMD u distance ofNF is 0.05591639307555685
-MMD Area distance ofNF is 9.878461124657179e-07
-Percentage error NF is 0.0003680488978473781
-Variance from prior of NF is 84.00816248997307
-MMD Id distance ofNF is 0.07472038269042969
-MMD Energy distance ofNF is 4.556641286512786e-09
-MMD u distance ofNF is 0.05591639307555685
+MMD Area distance ofNF is 0.00012118719707920889
+Percentage error NF is 0.00027762236553826366
+Variance from prior of NF is 2.8896633172233637
+MMD Id distance ofNF is 0.03999999910593033
+MMD Energy distance ofNF is 1.0822122931131162e-07
+MMD u distance ofNF is 0.028047552755184668
+Percentage of passing samples of NF is 1.0

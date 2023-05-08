@@ -1,10 +1,11 @@
 Data:
-1) Preprocess mesh
 1) Run generatedata
 2) Run preload data
-2) Run data simulations
-3) Run data RBF
-
+3) Run generatenegativedata
+4) Run generate_disc_dataset
+5) Run data simulations
+6) Run data RBF
+7) Run training_bayes_disc
 
 AutoEncoder Models:
 1) Run training_full

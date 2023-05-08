@@ -70,15 +70,14 @@ def custom_test(model,data):
 
 
 d={
-    #DM: "DM",
-  #EBM: "EBM",
+    DM: "DM",
+  EBM: "EBM",
   NF: "NF", 
 }
 decoder=torch.load("./nn/saved_models/AE.pt").decoder.decoder_base
 if __name__ == "__main__":
-    #name=sys.argv[1]
-    name=list(d.values())[0]
-    wrapper=list(d.keys())[0]
+    name=sys.argv[1]
+    wrapper=list(d.keys())[list(d.values()).index(name)]
     torch.manual_seed(100)
     np.random.seed(100)
     if data.use_cuda:

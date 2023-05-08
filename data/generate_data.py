@@ -1,9 +1,10 @@
 import meshio
 import numpy as np
 from cpffd import *
-a=meshio.read("data/Stanford_Bunny.ply")
 from tqdm import trange
-p=a.points.astype(float)
+
+np.random.seed(0)
+p=np.load("data/points.npy")
 np.random.seed(0)
 triangles=np.load("data/tetras.npy")
 def scale_normalize(points):
@@ -23,12 +24,12 @@ n_z=3
 mask=np.ones((n_x,n_y,n_z),dtype=int)
 mask[:,:,0]=0
 print(np.sum(mask))
-M=np.eye(np.sum(mask))
+M=np.eye(np.sum(mask)*3)
 latent=np.zeros((600,3,int(np.sum(mask))))
 
 indices_c=np.arange(n_x*n_y*n_z)[mask.reshape(-1).astype(bool)]
 indices_c.sort()
-vpffd=cpffd.DPFFD((n_x,n_y,n_z))
+vpffd=cpffd.BPFFD((n_x,n_y,n_z))
 
 a=0.2
 for i in trange(600):
@@ -38,7 +39,7 @@ for i in trange(600):
     latent[i,0]=vpffd.array_mu_x[:,:,1:].reshape(-1)
     latent[i,1]=vpffd.array_mu_y[:,:,1:].reshape(-1)
     latent[i,2]=vpffd.array_mu_z[:,:,1:].reshape(-1)
-    pdef=vpffd.double_ffd_adv(p,M,triangles,indices_c)
+    pdef=vpffd.barycenter_ffd_adv(p,M,indices_c)
     pdef=restore(pdef,scale,minim)
     meshio.write_points_cells("data/bunny_{}.ply".format(i),pdef,[])
 

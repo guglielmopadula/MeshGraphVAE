@@ -1,12 +1,7 @@
-MMD Area distance ofDM is 0.001802627445727012
-Percentage error DM is 0.0003972350896219723
-Variance from prior of DM is 101.00325605403374
-MMD Id distance ofDM is 0.21732068061828613
-MMD Energy distance ofDM is 2.7256916723672475e-09
-MMD u distance ofDM is 0.27264454025344786
-MMD Area distance ofDM is 0.001802627445727012
-Percentage error DM is 0.0003972350896219723
-Variance from prior of DM is 101.00325605403374
-MMD Id distance ofDM is 0.21732068061828613
-MMD Energy distance ofDM is 2.7256916723672475e-09
-MMD u distance ofDM is 0.27264454025344786
+MMD Area distance ofDM is 0.01127666037711883
+Percentage error DM is 0.0003022402069473174
+Variance from prior of DM is 3.954674857010294
+MMD Id distance ofDM is 0.03999999910593033
+MMD Energy distance ofDM is 8.540343397811512e-06
+MMD u distance ofDM is 0.10705439494777202
+Percentage of passing samples of DM is 1.0

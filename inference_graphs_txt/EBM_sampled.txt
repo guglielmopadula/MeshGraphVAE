@@ -1,12 +1,7 @@
-MMD Area distance ofEBM is 1.4832690121480141e-05
-Percentage error EBM is 0.00037144660891499383
-Variance from prior of EBM is 90.01826481523473
-MMD Id distance ofEBM is 0.04977107048034668
-MMD Energy distance ofEBM is 1.8201955498398092e-09
-MMD u distance ofEBM is 0.034556521042724775
-MMD Area distance ofEBM is 1.4832690121480141e-05
-Percentage error EBM is 0.00037144660891499383
-Variance from prior of EBM is 90.01826481523473
-MMD Id distance ofEBM is 0.04977107048034668
-MMD Energy distance ofEBM is 1.8201955498398092e-09
-MMD u distance ofEBM is 0.034556521042724775
+MMD Area distance ofEBM is 0.0005838530519923779
+Percentage error EBM is 0.0002805984591638358
+Variance from prior of EBM is 2.933512821010076
+MMD Id distance ofEBM is 0.03999999910593033
+MMD Energy distance ofEBM is 5.497538833054705e-07
+MMD u distance ofEBM is 0.023131995538463457
+Percentage of passing samples of EBM is 1.0

@@ -81,8 +81,8 @@ d={
 }
 
 if __name__ == "__main__":
-    #name=sys.argv[1]
-    name="BEGAN"
+    name=sys.argv[1]
+    #name="BEGAN"
     wrapper=list(d.keys())[list(d.values()).index(name)]
     torch.manual_seed(100)
     np.random.seed(100)

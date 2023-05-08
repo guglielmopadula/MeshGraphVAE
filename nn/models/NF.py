@@ -109,5 +109,5 @@ class NF(LightningModule):
     def test_step(self, batch, batch_idx):
         return 0
     def configure_optimizers(self):
-        optimizer = torch.optim.AdamW(self.parameters(), lr=0.00009)#0.0001 k=1
+        optimizer = torch.optim.AdamW(self.parameters(), lr=0.001)#0.0001 k=1
         return {"optimizer": optimizer}

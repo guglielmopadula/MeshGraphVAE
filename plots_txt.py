@@ -16,6 +16,7 @@ for name in names:
     energy_data=np.load("simulations/data/energy_data.npy")
     energy_sampled=np.load("simulations/inference_objects/energy_"+name+".npy")
     mmd_u=np.load("simulations/inference_objects/mmd_u_"+name+".npy")
+    perc_pass=np.load("nn/geometrical_measures/perc_pass_"+name+".npy")
 
     f = open("./inference_graphs_txt/"+name+"_sampled.txt", "a")
     f.write("MMD Area distance of"+name+" is "+str(mmd(area_data,area_sampled))+"\n")
@@ -30,6 +31,9 @@ for name in names:
     print("MMD Energy distance of"+name+" is "+str(mmd(energy_data,energy_sampled))+"\n")
     f.write("MMD u distance of"+name+" is "+str(mmd_u)+"\n")
     print("MMD u distance of"+name+" is "+str(mmd_u)+"\n")
+    print("Percentage of passing samples of " + name + " is " + str(perc_pass))
+    f.write("Percentage of passing samples of " + name + " is " + str(perc_pass))
+
 
     f.close()
     fig2,ax2=plt.subplots()

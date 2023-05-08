@@ -94,7 +94,7 @@ class AAE(LightningModule):
 
 
     def configure_optimizers(self):
-        optimizer_ae = torch.optim.AdamW(itertools.chain(self.encoder.parameters(), self.decoder.parameters()), lr=1e-7)
+        optimizer_ae = torch.optim.AdamW(itertools.chain(self.encoder.parameters(), self.decoder.parameters()), lr=1e-4)
         optimizer_disc = torch.optim.AdamW(self.discriminator.parameters(), lr=1e-3)
         return [optimizer_ae,optimizer_disc], []
     
