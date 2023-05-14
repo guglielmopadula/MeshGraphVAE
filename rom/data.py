@@ -65,11 +65,10 @@ for approxname, approxclass in approximations.items():
 
 approximations=list(approximations.keys())
 db_t=list(db_t.keys())
-f = open("./rom/graphs_txt/data.txt", "a")
 for i in range(len(db_t)):
     for j in range(len(approximations)):
         print("Training error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(train_error[i,j]))
         print("Test error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(train_error[i,j]))
-        f.write("Training error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(train_error[i,j]))
-        f.write("Test error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(train_error[i,j]))
-f.close()
+
+np.save("./simulations/inference_objects/data_rom_err_train.npy",train_error)
+np.save("./simulations/inference_objects/data_rom_err_test.npy",test_error)

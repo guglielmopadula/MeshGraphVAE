@@ -1,7 +1,56 @@
-MMD Area distance ofBEGAN is 0.00042686284637305505
-Percentage error BEGAN is 0.00032499707949076157
-Variance from prior of BEGAN is 5.206452369645418
+MMD Area distance ofBEGAN is 1.3602416808922158e-05
+MMD Moment distance ofBEGAN is 1.4680409350376067e-06
+Percentage error BEGAN is 0.0003448478397816264
+Variance from prior of BEGAN is 12.048599014354396
 MMD Id distance ofBEGAN is 0.03999999910593033
-MMD Energy distance ofBEGAN is 3.526835712364118e-09
-MMD u distance ofBEGAN is 0.03107260247118937
+MMD Energy distance ofBEGAN is 3.622702138272871e-09
+MMD u distance ofBEGAN is 0.02832173870203558
 Percentage of passing samples of BEGAN is 1.0
+Training error of RBF over u is 0.020229491196912638
+Test error of RBF over u is 0.020850990006529405
+Training error of GPR over u is 0.019050465159905338
+Test error of GPR over u is 0.019028108766689
+Training error of KNeighbors over u is 0.011934515797574496
+Test error of KNeighbors over u is 0.011621195828030739
+Training error of RadiusNeighbors over u is 0.01099007421395019
+Test error of RadiusNeighbors over u is 0.010861806123326698
+Training error of ANN over u is 0.011624052107812435
+Test error of ANN over u is 0.011619463353567927
+Training error of RBF over energy is 8.062493332439506e-16
+Test error of RBF over energy is 0.013091204541895664
+Training error of GPR over energy is 0.7712595523830613
+Test error of GPR over energy is 0.26644864873595486
+Training error of KNeighbors over energy is 0.019286629541886365
+Test error of KNeighbors over energy is 0.024737751385498555
+Training error of RadiusNeighbors over energy is 0.0
+Test error of RadiusNeighbors over energy is nan
+Training error of ANN over energy is 0.017982800071892284
+Test error of ANN over energy is 0.020326531462361398
+MMD Area distance ofBEGAN is 1.3602416808922158e-05
+MMD Moment distance ofBEGAN is 1.4680409350376067e-06
+Percentage error BEGAN is 0.0003448478397816264
+Variance from prior of BEGAN is 12.048599014354396
+MMD Id distance ofBEGAN is 0.03999999910593033
+MMD Energy distance ofBEGAN is 3.622702138272871e-09
+MMD u distance ofBEGAN is 0.02832173870203558
+Percentage of passing samples of BEGAN is 1.0
+Training error of RBF over u is 0.020229491196912638
+Test error of RBF over u is 0.020850990006529405
+Training error of GPR over u is 0.019050465159905338
+Test error of GPR over u is 0.019028108766689
+Training error of KNeighbors over u is 0.011934515797574496
+Test error of KNeighbors over u is 0.011621195828030739
+Training error of RadiusNeighbors over u is 0.01099007421395019
+Test error of RadiusNeighbors over u is 0.010861806123326698
+Training error of ANN over u is 0.011624052107812435
+Test error of ANN over u is 0.011619463353567927
+Training error of RBF over energy is 8.062493332439506e-16
+Test error of RBF over energy is 0.013091204541895664
+Training error of GPR over energy is 0.7712595523830613
+Test error of GPR over energy is 0.26644864873595486
+Training error of KNeighbors over energy is 0.019286629541886365
+Test error of KNeighbors over energy is 0.024737751385498555
+Training error of RadiusNeighbors over energy is 0.0
+Test error of RadiusNeighbors over energy is nan
+Training error of ANN over energy is 0.017982800071892284
+Test error of ANN over energy is 0.020326531462361398

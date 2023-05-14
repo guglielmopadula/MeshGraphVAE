@@ -1,7 +1,56 @@
-MMD Area distance ofVAE is 0.00028932247068702566
-Percentage error VAE is 0.000270410869125044
-Variance from prior of VAE is 2.214144281781655
-MMD Id distance ofVAE is 0.03999999910593033
-MMD Energy distance ofVAE is 2.0014076795860092e-07
-MMD u distance ofVAE is 0.4886780597007583
+MMD Area distance ofVAE is 0.0009342013156086182
+MMD Moment distance ofVAE is 6.287462298359969e-06
+Percentage error VAE is 0.00032582286687102166
+Variance from prior of VAE is 7.584610349095451
+MMD Id distance ofVAE is 0.0399999991059302
+MMD Energy distance ofVAE is 6.375793439872268e-07
+MMD u distance ofVAE is 0.1224465552430214
 Percentage of passing samples of VAE is 1.0
+Training error of RBF over u is 0.01822868898383897
+Test error of RBF over u is 0.018617759052142364
+Training error of GPR over u is 0.010510377334378521
+Test error of GPR over u is 0.010660187056386996
+Training error of KNeighbors over u is 0.014860589463511438
+Test error of KNeighbors over u is 0.01476023988543743
+Training error of RadiusNeighbors over u is 0.012884413724896036
+Test error of RadiusNeighbors over u is 0.01302236082918954
+Training error of ANN over u is 0.010861577064079291
+Test error of ANN over u is 0.011078596902125136
+Training error of RBF over energy is 7.525083450870458e-16
+Test error of RBF over energy is 0.009461870473454348
+Training error of GPR over energy is 0.6115511390425784
+Test error of GPR over energy is 0.2106035344993715
+Training error of KNeighbors over energy is 0.014855813535093675
+Test error of KNeighbors over energy is 0.01878163530191713
+Training error of RadiusNeighbors over energy is 0.0
+Test error of RadiusNeighbors over energy is nan
+Training error of ANN over energy is 0.018431744343309305
+Test error of ANN over energy is 0.022009140169811866
+MMD Area distance ofVAE is 0.0009342013156086182
+MMD Moment distance ofVAE is 6.287462298359969e-06
+Percentage error VAE is 0.00032582286687102166
+Variance from prior of VAE is 7.584610349095451
+MMD Id distance ofVAE is 0.0399999991059302
+MMD Energy distance ofVAE is 6.375793439872268e-07
+MMD u distance ofVAE is 0.1224465552430214
+Percentage of passing samples of VAE is 1.0
+Training error of RBF over u is 0.01822868898383897
+Test error of RBF over u is 0.018617759052142364
+Training error of GPR over u is 0.010510377334378521
+Test error of GPR over u is 0.010660187056386996
+Training error of KNeighbors over u is 0.014860589463511438
+Test error of KNeighbors over u is 0.01476023988543743
+Training error of RadiusNeighbors over u is 0.012884413724896036
+Test error of RadiusNeighbors over u is 0.01302236082918954
+Training error of ANN over u is 0.010861577064079291
+Test error of ANN over u is 0.011078596902125136
+Training error of RBF over energy is 7.525083450870458e-16
+Test error of RBF over energy is 0.009461870473454348
+Training error of GPR over energy is 0.6115511390425784
+Test error of GPR over energy is 0.2106035344993715
+Training error of KNeighbors over energy is 0.014855813535093675
+Test error of KNeighbors over energy is 0.01878163530191713
+Training error of RadiusNeighbors over energy is 0.0
+Test error of RadiusNeighbors over energy is nan
+Training error of ANN over energy is 0.018431744343309305
+Test error of ANN over energy is 0.022009140169811866

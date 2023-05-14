@@ -5,6 +5,7 @@ from tqdm import trange
 
 np.random.seed(0)
 p=np.load("data/points.npy")
+print(p.dtype)
 np.random.seed(0)
 triangles=np.load("data/tetras.npy")
 def scale_normalize(points):
@@ -24,7 +25,7 @@ n_z=3
 mask=np.ones((n_x,n_y,n_z),dtype=int)
 mask[:,:,0]=0
 print(np.sum(mask))
-M=np.eye(np.sum(mask)*3)
+M=np.eye(np.sum(mask)*3,dtype=np.float32)
 latent=np.zeros((600,3,int(np.sum(mask))))
 
 indices_c=np.arange(n_x*n_y*n_z)[mask.reshape(-1).astype(bool)]

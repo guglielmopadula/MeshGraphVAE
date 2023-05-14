@@ -20,7 +20,7 @@ def mmd(X,Y):
     return np.mean(s(torch.tensor(X),torch.tensor(X)).to_dense().detach().numpy())+np.mean(s(torch.tensor(Y),torch.tensor(Y)).to_dense().detach().numpy())-2*np.mean(s(torch.tensor(X),torch.tensor(Y)).to_dense().detach().numpy())
 
 
-name="NF"
+name="VAE"
 pca=PCA(n_components=4)
 u_data=np.load("simulations/data/u_data.npy").reshape(NUMBER_SAMPLES,-1)
 u_model=np.load("simulations/inference_objects/u_"+name+".npy").reshape(NUMBER_SAMPLES,-1)

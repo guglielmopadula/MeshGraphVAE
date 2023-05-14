@@ -1,7 +1,56 @@
-MMD Area distance ofEBM is 0.0005838530519923779
-Percentage error EBM is 0.0002805984591638358
-Variance from prior of EBM is 2.933512821010076
+MMD Area distance ofEBM is 0.0017052767910659128
+MMD Moment distance ofEBM is 2.255163847664221e-06
+Percentage error EBM is 0.00034135082251547546
+Variance from prior of EBM is 10.96974829884764
 MMD Id distance ofEBM is 0.03999999910593033
-MMD Energy distance ofEBM is 5.497538833054705e-07
-MMD u distance ofEBM is 0.023131995538463457
+MMD Energy distance ofEBM is 1.4378863362196626e-06
+MMD u distance ofEBM is 0.07071295736782446
 Percentage of passing samples of EBM is 1.0
+Training error of RBF over u is 0.019916519092827573
+Test error of RBF over u is 0.019496913632900292
+Training error of GPR over u is 0.011375389984908326
+Test error of GPR over u is 0.011333488982974106
+Training error of KNeighbors over u is 0.016085828262610853
+Test error of KNeighbors over u is 0.015841445066425215
+Training error of RadiusNeighbors over u is 0.01432123304580743
+Test error of RadiusNeighbors over u is 0.014192557818041416
+Training error of ANN over u is 0.01754677715216582
+Test error of ANN over u is 0.017324372126174874
+Training error of RBF over energy is 8.090069145336316e-16
+Test error of RBF over energy is 0.01096897786936401
+Training error of GPR over energy is 0.8153664901666561
+Test error of GPR over energy is 0.258662923696714
+Training error of KNeighbors over energy is 0.017131995073780742
+Test error of KNeighbors over energy is 0.020469697407862694
+Training error of RadiusNeighbors over energy is 0.0
+Test error of RadiusNeighbors over energy is nan
+Training error of ANN over energy is 0.029409965621500313
+Test error of ANN over energy is 0.053008175488286687
+MMD Area distance ofEBM is 0.0017052767910659128
+MMD Moment distance ofEBM is 2.255163847664221e-06
+Percentage error EBM is 0.00034135082251547546
+Variance from prior of EBM is 10.96974829884764
+MMD Id distance ofEBM is 0.03999999910593033
+MMD Energy distance ofEBM is 1.4378863362196626e-06
+MMD u distance ofEBM is 0.07071295736782446
+Percentage of passing samples of EBM is 1.0
+Training error of RBF over u is 0.019916519092827573
+Test error of RBF over u is 0.019496913632900292
+Training error of GPR over u is 0.011375389984908326
+Test error of GPR over u is 0.011333488982974106
+Training error of KNeighbors over u is 0.016085828262610853
+Test error of KNeighbors over u is 0.015841445066425215
+Training error of RadiusNeighbors over u is 0.01432123304580743
+Test error of RadiusNeighbors over u is 0.014192557818041416
+Training error of ANN over u is 0.01754677715216582
+Test error of ANN over u is 0.017324372126174874
+Training error of RBF over energy is 8.090069145336316e-16
+Test error of RBF over energy is 0.01096897786936401
+Training error of GPR over energy is 0.8153664901666561
+Test error of GPR over energy is 0.258662923696714
+Training error of KNeighbors over energy is 0.017131995073780742
+Test error of KNeighbors over energy is 0.020469697407862694
+Training error of RadiusNeighbors over energy is 0.0
+Test error of RadiusNeighbors over energy is nan
+Training error of ANN over energy is 0.029409965621500313
+Test error of ANN over energy is 0.053008175488286687

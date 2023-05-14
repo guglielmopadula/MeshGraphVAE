@@ -1,7 +1,56 @@
-MMD Area distance ofDM is 0.01127666037711883
-Percentage error DM is 0.0003022402069473174
-Variance from prior of DM is 3.954674857010294
-MMD Id distance ofDM is 0.03999999910593033
-MMD Energy distance ofDM is 8.540343397811512e-06
-MMD u distance ofDM is 0.10705439494777202
+MMD Area distance ofDM is 0.0021058450051132382
+MMD Moment distance ofDM is 4.0209902927301755e-05
+Percentage error DM is 0.0003769790744020917
+Variance from prior of DM is 13.44807078542126
+MMD Id distance ofDM is 0.040000006556510925
+MMD Energy distance ofDM is 2.1568497707846745e-06
+MMD u distance ofDM is 0.04300223260088121
 Percentage of passing samples of DM is 1.0
+Training error of RBF over u is 0.02286359170614547
+Test error of RBF over u is 0.024353442436272504
+Training error of GPR over u is 0.013399985545892185
+Test error of GPR over u is 0.01367365018050593
+Training error of KNeighbors over u is 0.013234024391696304
+Test error of KNeighbors over u is 0.013758277937079991
+Training error of RadiusNeighbors over u is 0.017204340459194663
+Test error of RadiusNeighbors over u is 0.017121864695632562
+Training error of ANN over u is 0.01825004510013531
+Test error of ANN over u is 0.018415861749873825
+Training error of RBF over energy is 1.5377379637042003e-15
+Test error of RBF over energy is 0.018328245087615637
+Training error of GPR over energy is 1.164390226016655
+Test error of GPR over energy is 0.3635257512011711
+Training error of KNeighbors over energy is 0.025079647806989964
+Test error of KNeighbors over energy is 0.02833742380597226
+Training error of RadiusNeighbors over energy is 0.0
+Test error of RadiusNeighbors over energy is nan
+Training error of ANN over energy is 0.015144148258786613
+Test error of ANN over energy is 0.3909120325760019
+MMD Area distance ofDM is 0.0021058450051132382
+MMD Moment distance ofDM is 4.0209902927301755e-05
+Percentage error DM is 0.0003769790744020917
+Variance from prior of DM is 13.44807078542126
+MMD Id distance ofDM is 0.040000006556510925
+MMD Energy distance ofDM is 2.1568497707846745e-06
+MMD u distance ofDM is 0.04300223260088121
+Percentage of passing samples of DM is 1.0
+Training error of RBF over u is 0.02286359170614547
+Test error of RBF over u is 0.024353442436272504
+Training error of GPR over u is 0.013399985545892185
+Test error of GPR over u is 0.01367365018050593
+Training error of KNeighbors over u is 0.013234024391696304
+Test error of KNeighbors over u is 0.013758277937079991
+Training error of RadiusNeighbors over u is 0.017204340459194663
+Test error of RadiusNeighbors over u is 0.017121864695632562
+Training error of ANN over u is 0.01825004510013531
+Test error of ANN over u is 0.018415861749873825
+Training error of RBF over energy is 1.5377379637042003e-15
+Test error of RBF over energy is 0.018328245087615637
+Training error of GPR over energy is 1.164390226016655
+Test error of GPR over energy is 0.3635257512011711
+Training error of KNeighbors over energy is 0.025079647806989964
+Test error of KNeighbors over energy is 0.02833742380597226
+Training error of RadiusNeighbors over energy is 0.0
+Test error of RadiusNeighbors over energy is nan
+Training error of ANN over energy is 0.015144148258786613
+Test error of ANN over energy is 0.3909120325760019

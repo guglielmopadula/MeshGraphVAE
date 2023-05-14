@@ -2,6 +2,15 @@ from nn.models.losses.losses import mmd
 import numpy as np
 import matplotlib.pyplot as plt
 names=["AE","VAE","AAE","BEGAN","EBM","DM","NF"]
+db_t=["u","energy"]
+approximations =  [
+    'RBF',
+    'GPR',
+    'KNeighbors',
+    'RadiusNeighbors',
+    'ANN'
+]
+
 for name in names:
 
 
@@ -17,10 +26,17 @@ for name in names:
     energy_sampled=np.load("simulations/inference_objects/energy_"+name+".npy")
     mmd_u=np.load("simulations/inference_objects/mmd_u_"+name+".npy")
     perc_pass=np.load("nn/geometrical_measures/perc_pass_"+name+".npy")
+    train_error_rom_sampled=np.load("./simulations/inference_objects/"+name+"_rom_err_train.npy")
+    test_error_rom_sampled=np.load("./simulations/inference_objects/"+name+"_rom_err_test.npy")
+    train_error_rom_data=np.load("./simulations/inference_objects/data_rom_err_train.npy")
+    test_error_rom_data=np.load("./simulations/inference_objects/data_rom_err_test.npy")
+
 
     f = open("./inference_graphs_txt/"+name+"_sampled.txt", "a")
     f.write("MMD Area distance of"+name+" is "+str(mmd(area_data,area_sampled))+"\n")
     print("MMD Area distance of"+name+" is "+str(mmd(area_data,area_sampled))+"\n")
+    f.write("MMD Moment distance of"+name+" is "+str(mmd(moment_tensor_data.reshape(-1,np.prod(moment_tensor_data.shape[1:])),moment_tensor_sampled.reshape(-1,np.prod(moment_tensor_data.shape[1:]))))+"\n")
+    print("MMD Moment distance of"+name+" is "+str(mmd(moment_tensor_data.reshape(-1,np.prod(moment_tensor_data.shape[1:])),moment_tensor_sampled.reshape(-1,np.prod(moment_tensor_data.shape[1:]))))+"\n")
     f.write("Percentage error "+name+" is "+str(error.item())+"\n")
     print("Percentage error "+name+" is "+str(error.item())+"\n")
     f.write("Variance from prior of "+name+" is "+str(variance.item())+"\n")
@@ -31,8 +47,16 @@ for name in names:
     print("MMD Energy distance of"+name+" is "+str(mmd(energy_data,energy_sampled))+"\n")
     f.write("MMD u distance of"+name+" is "+str(mmd_u)+"\n")
     print("MMD u distance of"+name+" is "+str(mmd_u)+"\n")
-    print("Percentage of passing samples of " + name + " is " + str(perc_pass))
-    f.write("Percentage of passing samples of " + name + " is " + str(perc_pass))
+    print("Percentage of passing samples of " + name + " is " + str(perc_pass)+"\n")
+    f.write("Percentage of passing samples of " + name + " is " + str(perc_pass)+"\n")
+    for i in range(len(db_t)):
+        for j in range(len(approximations)):
+            print("Training error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(train_error_rom_sampled[i,j])+"\n")
+            f.write("Training error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(train_error_rom_sampled[i,j])+"\n")
+            print("Test error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(test_error_rom_sampled[i,j])+"\n")
+            f.write("Test error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(test_error_rom_sampled[i,j])+"\n")
+
+
 
 
     f.close()
@@ -78,3 +102,12 @@ for name in names:
     fig2.savefig("./inference_graphs_txt/Energy_hist_"+name+".png")
     fig2,ax2=plt.subplots()
     
+
+f = open("./inference_graphs_txt/data.txt", "a")
+for i in range(len(db_t)):
+    for j in range(len(approximations)):
+        print("Training error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(train_error_rom_data[i,j])+"\n")
+        f.write("Training error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(train_error_rom_data[i,j])+"\n")
+        print("Test error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(test_error_rom_data[i,j])+"\n")
+        f.write("Test error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(test_error_rom_data[i,j])+"\n")
+
