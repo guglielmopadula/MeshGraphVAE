@@ -103,6 +103,10 @@ ax2.plot(names,rec_error_tot)
 fig2.savefig("./inference_graphs_txt/rec.pdf")
 
 
+fig2,ax2=plt.subplots()
+ax2.set_title("Variance")
+ax2.plot(["data"]+names,var_tot)
+fig2.savefig("./inference_graphs_txt/var.pdf")
 
 fig2,ax2=plt.subplots()
 ax2.set_title("ROM u train error")
