@@ -41,7 +41,6 @@ db2=Database(parameters,snapshot_2)
 
 db_t={"u": db1, "energy": db2}
 
-
 train={"u":[parameters_train,snapshot_1_train],"energy":[parameters_train,snapshot_2_train] }
 test={"u":[parameters_test,snapshot_1_test],"energy":[parameters_test,snapshot_2_test] }
 
@@ -52,17 +51,17 @@ approximations = {
     'RBF': RBF(),
     'GPR': GPR(),
     'KNeighbors': KNeighborsRegressor(),
-    'RadiusNeighbors':  RadiusNeighborsRegressor(),
     'ANN': ANN([2000, 2000], nn.Tanh(), 1000,l2_regularization=0.01,lr=0.0001),
 }
 
 
-train_error=np.zeros((2,5))
-test_error=np.zeros((2,5))
+train_error=np.zeros((2,4))
+test_error=np.zeros((2,4))
 
 for approxname, approxclass in approximations.items():
     j=list(approximations.keys()).index(approxname)
     approxclass.fit(train["energy"][0],train["energy"][1])
+    print(train["energy"][1].shape)
     train_error[1,j]=np.linalg.norm(approxclass.predict(train["energy"][0])-train["energy"][1])/np.linalg.norm(train["energy"][1])
     test_error[1,j]=np.linalg.norm(approxclass.predict(test["energy"][0])-test["energy"][1])/np.linalg.norm(test["energy"][1])
 
@@ -82,7 +81,7 @@ db_t=list(db_t.keys())
 for i in range(len(db_t)):
     for j in range(len(approximations)):
         print("Training error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(train_error[i,j]))
-        print("Test error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(train_error[i,j]))
+        print("Test error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(test_error[i,j]))
 
 np.save("./simulations/inference_objects/"+name+"_rom_err_train.npy",train_error)
 np.save("./simulations/inference_objects/"+name+"_rom_err_test.npy",test_error)

@@ -39,13 +39,12 @@ approximations = {
     'RBF': RBF(),
     'GPR': GPR(),
     'KNeighbors': KNeighborsRegressor(),
-    'RadiusNeighbors':  RadiusNeighborsRegressor(),
     'ANN': ANN([2000, 2000], nn.Tanh(), 1000,l2_regularization=0.01,lr=0.0001),
 }
 
 
-train_error=np.zeros((2,5))
-test_error=np.zeros((2,5))
+train_error=np.zeros((2,4))
+test_error=np.zeros((2,4))
 
 for approxname, approxclass in approximations.items():
     j=list(approximations.keys()).index(approxname)
