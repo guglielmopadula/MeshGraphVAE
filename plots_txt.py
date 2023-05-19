@@ -14,7 +14,7 @@ plt.rcParams.update({
     "text.usetex": True,
     "font.family": "serif",
     'font.serif': ['Computer Modern'],
-    "font.size": 13
+    "font.size": 20
 })
 
 var_tot=np.zeros(8)
