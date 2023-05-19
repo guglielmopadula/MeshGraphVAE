@@ -67,13 +67,13 @@ with open("nn/saved_models/bayesdisc.pt", 'rb') as in_strm:
 
 disc.eval()
 d={
-  AE: "AE",
-  AAE: "AAE",
-  VAE: "VAE", 
-  BEGAN: "BEGAN",
+  #AE: "AE",
+  #AAE: "AAE",
+  #VAE: "VAE", 
+  #BEGAN: "BEGAN",
   DM: "DM",
-  EBM:"EBM",
-  NF:"NF" 
+  #EBM:"EBM",
+  #NF:"NF" 
   }
 
 data=Data(batch_size=BATCH_SIZE,num_train=NUM_TRAIN_SAMPLES,

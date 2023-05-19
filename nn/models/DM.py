@@ -74,7 +74,7 @@ class DM(LightningModule):
         return self.encoder.forward(data)
     
     def configure_optimizers(self):
-        optimizer = torch.optim.AdamW(self.parameters(), lr=0.00009)#0.0001 k=1
+        optimizer = torch.optim.AdamW(self.parameters(), lr=0.001)#0.0001 k=1
         return {"optimizer": optimizer}
 
     def sample_mesh(self,mean=None,var=None):

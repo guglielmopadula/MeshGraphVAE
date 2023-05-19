@@ -13,7 +13,8 @@ names=["VAE",
        "BEGAN",
        "DM",
        "EBM",
-       "NF"]
+       "NF"
+       ]
 
 NUM_SAMPLES=300
 NUM_TRAIN_SAMPLES=250
@@ -59,7 +60,7 @@ for name in names:
         'RBF': RBF(),
         'GPR': GPR(),
         'KNeighbors': KNeighborsRegressor(),
-        'ANN': ANN([2000, 2000], nn.Tanh(), 1000,l2_regularization=0.01,lr=0.0001),
+        'ANN': ANN([2000, 2000], nn.Tanh(), 1000,l2_regularization=0.03,lr=0.001),
     }
 
 

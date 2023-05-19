@@ -101,6 +101,7 @@ fig2,ax2=plt.subplots()
 ax2.set_title("Rec error between data and GM")
 ax2.plot(names,rec_error_tot)
 fig2.savefig("./inference_graphs_txt/rec.pdf")
+styles=['bo','gv','r.','y,']
 
 
 fig2,ax2=plt.subplots()
@@ -129,6 +130,8 @@ fig2.savefig("./inference_graphs_txt/test_u.pdf")
 
 fig2,ax2=plt.subplots()
 ax2.set_title("ROM energy train error")
+
+
 
 for j in range(len(approximations)):
     ax2.plot(["data"]+names,train_energy_tot[:,j],label=approximations[j])
