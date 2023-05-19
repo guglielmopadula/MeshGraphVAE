@@ -10,6 +10,13 @@ approximations =  [
     'ANN'
 ]
 
+plt.rcParams.update({
+    "text.usetex": True,
+    "font.family": "serif",
+    'font.serif': ['Computer Modern'],
+    "font.size": 13
+})
+
 var_tot=np.zeros(8)
 mmd_tensor_tot=np.zeros(7)
 mmd_area_tot=np.zeros(7)
