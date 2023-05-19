@@ -82,6 +82,16 @@ for i in range(len(names)):
     _=ax2.hist([energy_data,energy_sampled],8,label=['real','sampled'])
     ax2.legend()
     fig2.savefig("./inference_graphs_txt/Energy_hist_"+name+".pdf")
+
+plt.rcParams.update({
+    "text.usetex": True,
+    "font.family": "serif",
+    'font.serif': ['Computer Modern'],
+    "font.size": 15
+})
+
+
+
 #Geometrical quantities
 fig2,ax2=plt.subplots()
 ax2.set_title("MMD between moment tensor of data and of GM")
@@ -111,10 +121,23 @@ fig2.savefig("./inference_graphs_txt/rec.pdf")
 styles=['bo','gv','r.','y,']
 
 
+
+
+
 fig2,ax2=plt.subplots()
 ax2.set_title("Variance")
 ax2.plot(["data"]+names,var_tot)
 fig2.savefig("./inference_graphs_txt/var.pdf")
+
+
+plt.rcParams.update({
+    "text.usetex": True,
+    "font.family": "serif",
+    'font.serif': ['Computer Modern'],
+    "font.size": 15
+})
+
+
 
 fig2,ax2=plt.subplots()
 ax2.set_title("ROM u train error")
