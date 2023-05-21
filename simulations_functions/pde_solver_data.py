@@ -33,7 +33,7 @@ def calculate_simulation(name,nodes,elem,bary,write=True):
     cell = ufl.Cell(shape, geometric_dimension=gdim)
     domain = ufl.Mesh(ufl.VectorElement("Lagrange", cell, degree))
     domain = mesh.create_mesh(MPI.COMM_WORLD, elem, nodes, domain)
-    V = FunctionSpace(domain, ("CG", 1))
+    V = FunctionSpace(domain, ("CG", 2))
     uD = fem.Function(V)
     uD.interpolate(lambda x: np.exp(-((x[0]-bary[0])**2 + (x[1]-bary[1])**2+(x[2]-bary[2])**2)**0.5))
     tdim = domain.topology.dim
@@ -64,7 +64,7 @@ def calculate_simulation(name,nodes,elem,bary,write=True):
 if __name__=="__main__":
     np.random.seed(0)
     NUM_SAMPLES=300
-    points=np.load("data/data.npy").reshape(600,-1,3)
+    points=np.load("data/data.npy").reshape(NUM_SAMPLES,-1,3)
     tets=np.load("data/tetras.npy")
     bary=np.mean(points[0],axis=0)
     value,uh=calculate_simulation("data/bunny_{}".format(0),points[0],tets,bary)

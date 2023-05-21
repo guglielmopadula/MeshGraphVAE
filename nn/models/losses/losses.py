@@ -24,6 +24,13 @@ def mmd(X,Y):
     Y=Y.reshape(Y.shape[0],-1)
     return np.mean(s(torch.tensor(X),torch.tensor(X)).to_dense().detach().numpy())+np.mean(s(torch.tensor(Y),torch.tensor(Y)).to_dense().detach().numpy())-2*np.mean(s(torch.tensor(X),torch.tensor(Y)).to_dense().detach().numpy())
 
+def relmmd(X,Y):
+    s=get_kernel()
+    X=X.reshape(X.shape[0],-1)
+    Y=Y.reshape(Y.shape[0],-1)
+    return (np.mean(s(torch.tensor(X),torch.tensor(X)).to_dense().detach().numpy())+np.mean(s(torch.tensor(Y),torch.tensor(Y)).to_dense().detach().numpy())-2*np.mean(s(torch.tensor(X),torch.tensor(Y)).to_dense().detach().numpy()))/(np.mean(s(torch.tensor(Y),torch.tensor(Y)).to_dense().detach().numpy()))
+
+
 '''  
 def mmd(X,Y):
     X=X.reshape(X.shape[0],-1)

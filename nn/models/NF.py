@@ -62,6 +62,8 @@ class NF(LightningModule):
         self.dist=torch.distributions.Normal(loc=0.,scale=1.)
         self.automatic_optimization=False
         self.latent_dim=latent_dim
+        self.train_losses=[]
+        self.eval_losses=[]
 
     def forward(self,x):
         det=0
@@ -89,7 +91,24 @@ class NF(LightningModule):
         self.clip_gradients(opt,0.1)
         opt.step()
         opt.zero_grad()
+        self.train_losses.append(loss.item())
         return loss
+    
+    def validation_step(self, batch, batch_idx):
+        x=batch
+        z,lk=self.forward(x)
+        lnorm=self.dist.log_prob(z).sum(1)
+        loss=-torch.mean(lk+lnorm)
+        self.eval_losses.append(loss.item())
+        return loss
+    
+    def test_step(self, batch, batch_idx):
+        x=batch
+        z,lk=self.forward(x)
+        lnorm=self.dist.log_prob(z).sum(1)
+        loss=-torch.mean(lk+lnorm)
+        return loss
+
 
     def sample_mesh(self,mean=None,var=None):
         device=self.decoder.pca._V.device

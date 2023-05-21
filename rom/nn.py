@@ -13,7 +13,8 @@ names=["VAE",
        "BEGAN",
        "DM",
        "EBM",
-       "NF"
+       "NF",
+       "AS"
        ]
 
 NUM_SAMPLES=300
@@ -54,7 +55,7 @@ for name in names:
     test={"u":[parameters_test,snapshot_1_test],"energy":[parameters_test,snapshot_2_test] }
 
 
-    podae=PODAE(POD('svd'),AE([200, 100, 10], [10, 100, 200], nn.Tanh(), nn.Tanh(), 1000))
+    podae=PODAE(POD('svd'),AE([200, 100, 10], [10, 100, 200], nn.Tanh(), nn.Tanh(), 5000))
 
     approximations = {
         'RBF': RBF(),

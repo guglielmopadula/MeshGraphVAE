@@ -36,6 +36,8 @@ class DM(LightningModule):
         self.T=T
         self.beta_min=beta_min
         self.beta_max=beta_max
+        self.train_losses=[]
+        self.eval_losses=[]
 
     def beta(self, t):
         return self.beta_min + (t / self.T) * (self.beta_max - self.beta_min)
@@ -56,25 +58,33 @@ class DM(LightningModule):
         input=torch.sqrt(self.bar_alpha(t)).to(x.device)*batch+(torch.sqrt(1-self.bar_alpha(t))*eps).to(x.device)
         loss=torch.linalg.norm(eps-self.hidden_nn(input))
         self.log("train_ebm_loss", loss)
+        self.train_losses.append(loss.item())
         return loss
     
-    '''
+    
     def validation_step(self, batch, batch_idx):
         x=batch
-        z=self.sample_mesh(torch.zeros(100,self.latent_dim),torch.ones(100,self.latent_dim))
-        loss=L2_loss(batch,z)
-        self.log("val_mmd", loss)
+        t=int(torch.floor(torch.rand(1)*self.T)+1)
+        eps=torch.randn(x.shape).to(x.device)
+        input=torch.sqrt(self.bar_alpha(t)).to(x.device)*batch+(torch.sqrt(1-self.bar_alpha(t))*eps).to(x.device)
+        loss=torch.linalg.norm(eps-self.hidden_nn(input))
+        self.eval_losses.append(loss.item())
         return loss
-    '''
+
     def test_step(self, batch, batch_idx):
-        return 0
+        x=batch
+        t=int(torch.floor(torch.rand(1)*self.T)+1)
+        eps=torch.randn(x.shape).to(x.device)
+        input=torch.sqrt(self.bar_alpha(t)).to(x.device)*batch+(torch.sqrt(1-self.bar_alpha(t))*eps).to(x.device)
+        loss=torch.linalg.norm(eps-self.hidden_nn(input))
+        return loss
     
 
     def get_latent(self,data):
         return self.encoder.forward(data)
     
     def configure_optimizers(self):
-        optimizer = torch.optim.AdamW(self.parameters(), lr=0.001)#0.0001 k=1
+        optimizer = torch.optim.AdamW(self.parameters(), lr=0.0001)#0.001 k=1
         return {"optimizer": optimizer}
 
     def sample_mesh(self,mean=None,var=None):

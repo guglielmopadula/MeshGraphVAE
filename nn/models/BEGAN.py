@@ -48,7 +48,8 @@ class BEGAN(LightningModule):
         self.generator = self.Generator(data_shape=self.data_shape, latent_dim=self.latent_dim,hidden_dim=self.hidden_dim,pca=self.pca,drop_prob=self.drop_prob,batch_size=self.batch_size,barycenter=self.barycenter)
         self.discriminator = self.Discriminator(data_shape=self.data_shape, latent_dim=self.latent_dim,hidden_dim=self.hidden_dim,pca=self.pca,drop_prob=self.drop_prob,batch_size=self.batch_size,barycenter=self.barycenter)
         self.automatic_optimization=False
-
+        self.train_losses=[]
+        self.eval_losses=[]
 
         
     def forward(self, x):
@@ -92,21 +93,63 @@ class BEGAN(LightningModule):
         self.manual_backward(loss_disc)
         self.clip_gradients(d_opt, gradient_clip_val=0.1)
         d_opt.step()        
+        self.train_losses.append([loss_disc.item(),loss_gen.item()])
 
         
         return loss_disc
         
     def validation_step(self, batch, batch_idx):
         x=batch
-        self.log("val_began_loss", self.disc_loss(x))
-        return self.disc_loss(x)
+        z_p_1=torch.randn(len(x), self.latent_dim).type_as(x)
 
+        z_d_1=self.discriminator.encoder_base(x)
+        z_d_1=z_d_1.reshape(len(x),self.latent_dim)
+        
+
+        batch_p_1=self.generator(z_p_1)
+        batch_d_1=self.generator(z_d_1)
+        
+        gamma=1
+        k=0
+        lambda_k = 0.001
+        
+        
+
+        loss_disc=self.disc_loss(x)-k*self.disc_loss(batch_d_1)
+        loss_gen=self.disc_loss(batch_p_1.detach())
+        diff = torch.mean(gamma * self.disc_loss(batch) - loss_gen)
+        k = k + lambda_k * diff.item()
+        k = min(max(k, 0), 1)
+        
+        self.eval_losses.append([loss_disc.item(),loss_gen.item()]) 
+        return loss_disc
         
     def test_step(self, batch, batch_idx):
         x=batch
-        self.log("test_began_loss", self.disc_loss(x))
-        return self.disc_loss(x)
+        z_p_1=torch.randn(len(x), self.latent_dim).type_as(x)
+
+        z_d_1=self.discriminator.encoder_base(x)
+        z_d_1=z_d_1.reshape(len(x),self.latent_dim)
         
+
+        batch_p_1=self.generator(z_p_1)
+        batch_d_1=self.generator(z_d_1)
+        
+        gamma=1
+        k=0
+        lambda_k = 0.001
+        
+        loss=self.disc_loss(batch_p_1)
+        
+
+        loss_disc=self.disc_loss(x)-k*self.disc_loss(batch_d_1)
+        loss_gen=self.disc_loss(batch_p_1.detach())
+        diff = torch.mean(gamma * self.disc_loss(batch) - loss_gen)
+        k = k + lambda_k * diff.item()
+        k = min(max(k, 0), 1)
+        
+        return loss_disc
+                
 
     def configure_optimizers(self): #0.039,.0.2470, 0.2747
         optimizer_gen = torch.optim.AdamW(self.generator.parameters(), lr=0.00000002) 

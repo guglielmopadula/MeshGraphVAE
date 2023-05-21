@@ -23,7 +23,7 @@ import scipy
 from tqdm import trange
 import numpy as np
 import meshio
-from models.losses.losses import mmd
+from models.losses.losses import relmmd
 cuda_avail=True if torch.cuda.is_available() else False
 torch.use_deterministic_algorithms(True)
 from pytorch_lightning.plugins.environments import SLURMEnvironment
@@ -69,9 +69,9 @@ disc.eval()
 d={
   #AE: "AE",
   #AAE: "AAE",
-  #VAE: "VAE", 
+  VAE: "VAE", 
   #BEGAN: "BEGAN",
-  DM: "DM",
+  #DM: "DM",
   #EBM:"EBM",
   #NF:"NF" 
   }
@@ -152,7 +152,7 @@ for wrapper, name in d.items():
             moment_tensor_sampled[:,j,k]=np.mean(temp.reshape(NUMBER_SAMPLES,-1,3)[:,:,j]*temp.reshape(NUMBER_SAMPLES,-1,3)[:,:,k],axis=1)
     variance=np.sum(np.var(temp,axis=0))
     variance_data=np.sum(np.var(data2.reshape(NUMBER_SAMPLES,-1),axis=0))
-    mmd_data=mmd(disc.compute_latent([torch.tensor(temp.astype(np.float32)).reshape(NUMBER_SAMPLES,-1),_]),disc.compute_latent([torch.tensor(data2.astype(np.float32)).reshape(NUMBER_SAMPLES,-1),_]))
+    mmd_data=relmmd(disc.compute_latent([torch.tensor(temp.astype(np.float32)).reshape(NUMBER_SAMPLES,-1),_]),disc.compute_latent([torch.tensor(data2.astype(np.float32)).reshape(NUMBER_SAMPLES,-1),_]))
     np.save("nn/geometrical_measures/moment_tensor_data.npy",moment_tensor_data)
     np.save("nn/geometrical_measures/moment_tensor_"+name+".npy",moment_tensor_sampled)
     print("Saved moments")

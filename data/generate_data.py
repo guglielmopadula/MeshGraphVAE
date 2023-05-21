@@ -2,7 +2,7 @@ import meshio
 import numpy as np
 from cpffd import *
 from tqdm import trange
-
+NUM_SAMPLES=600
 np.random.seed(0)
 p=np.load("data/points.npy")
 print(p.dtype)
@@ -26,14 +26,14 @@ mask=np.ones((n_x,n_y,n_z),dtype=int)
 mask[:,:,0]=0
 print(np.sum(mask))
 M=np.eye(np.sum(mask)*3,dtype=np.float32)
-latent=np.zeros((600,3,int(np.sum(mask))))
+latent=np.zeros((NUM_SAMPLES,3,int(np.sum(mask))))
 
 indices_c=np.arange(n_x*n_y*n_z)[mask.reshape(-1).astype(bool)]
 indices_c.sort()
 vpffd=cpffd.BPFFD((n_x,n_y,n_z))
 
 a=0.2
-for i in trange(600):
+for i in trange(NUM_SAMPLES):
     vpffd.array_mu_x=a*np.random.rand(*vpffd.array_mu_x.shape)*np.arange(n_z).reshape(1,1,-1)
     vpffd.array_mu_y=a*np.random.rand(*vpffd.array_mu_y.shape)*np.arange(n_z).reshape(1,1,-1)
     vpffd.array_mu_z=a*np.random.rand(*vpffd.array_mu_z.shape)*np.arange(n_z).reshape(1,1,-1)

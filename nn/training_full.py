@@ -113,6 +113,10 @@ if __name__ == "__main__":
 
 
     trainer.fit(model, data)
+
+    np.save("./nn/saved_models/"+name+"_train_loss.npy",np.array(model.train_losses))
+    np.save("./nn/saved_models/"+name+"_eval_loss.npy",np.array(model.eval_losses))
+
     torch.save(model,"./nn/saved_models/"+name+".pt")
     data=Data(batch_size=BATCH_SIZE,num_train=NUM_TRAIN_SAMPLES,
           num_test=NUM_TEST_SAMPLES,
@@ -123,7 +127,8 @@ if __name__ == "__main__":
                                
 
     model=torch.load("./nn/saved_models/"+name+".pt",map_location="cpu")
-    model=model.eval()  
+    model=model.eval()
+  
     with torch.no_grad():
         print(custom_test(model,data))
 

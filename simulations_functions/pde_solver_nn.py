@@ -10,12 +10,10 @@ from dolfinx.fem import FunctionSpace
 import pyvista
 from mpi4py import MPI
 from dolfinx import mesh
-from sklearn.gaussian_process import GaussianProcessRegressor
-from sklearn.gaussian_process.kernels import DotProduct, WhiteKernel
 import tetgen
 import meshio
 from tqdm import trange
-from scipy.interpolate import RBFInterpolator
+import sys
 
 def volume_2_x(mesh):
     shape=mesh.shape
@@ -33,7 +31,7 @@ def calculate_simulation(name,nodes,elem,bary,write=True):
     cell = ufl.Cell(shape, geometric_dimension=gdim)
     domain = ufl.Mesh(ufl.VectorElement("Lagrange", cell, degree))
     domain = mesh.create_mesh(MPI.COMM_WORLD, elem, nodes, domain)
-    V = FunctionSpace(domain, ("CG", 1))
+    V = FunctionSpace(domain, ("CG", 2))
     uD = fem.Function(V)
     uD.interpolate(lambda x: np.exp(-((x[0]-bary[0])**2 + (x[1]-bary[1])**2+(x[2]-bary[2])**2)**0.5))
     tdim = domain.topology.dim
@@ -65,7 +63,7 @@ def calculate_simulation(name,nodes,elem,bary,write=True):
     return value,u_val
 
 if __name__=="__main__":
-    name="DM"
+    name=sys.argv[1]
     np.random.seed(0)
     NUM_SAMPLES=300
     points=np.load("nn/inference_objects/"+name+".npy").reshape(NUM_SAMPLES,-1,3)

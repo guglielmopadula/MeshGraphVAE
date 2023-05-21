@@ -92,6 +92,9 @@ if __name__ == "__main__":
     model=wrapper(latent_dim=LATENT_DIM,drop_prob=DROP_PROB,decoder=decoder)
     print("Training of "+name+ "has started")
     trainer.fit(model, data)
+    np.save("./nn/saved_models/"+name+"_train_loss.npy",np.array(model.train_losses))
+    np.save("./nn/saved_models/"+name+"_eval_loss.npy",np.array(model.eval_losses))
+
     torch.save(model,"./nn/saved_models/"+name+".pt")
     data=EncodedData(num_workers=NUM_WORKERS,batch_size=BATCH_SIZE,data_train=encoded_data_train,data_test=encoded_data_test,use_cuda=False,latent_dim=encoded_data_train.shape[1])
                                

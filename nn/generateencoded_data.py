@@ -26,7 +26,7 @@ data=Data(batch_size=BATCH_SIZE,num_train=NUM_TRAIN_SAMPLES,
           num_test=NUM_TEST_SAMPLES,
           num_workers=NUM_WORKERS,
           reduced_dimension=REDUCED_DIMENSION, 
-          data=np.load("data/data.npy"),
+          data=np.load("data/data.npy")[:600,],
           use_cuda=True)
                                
 

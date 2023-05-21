@@ -22,6 +22,8 @@ def sample_langevin(x, model, stepsize, n_steps):
         l_samples.append(x.detach())
         noise = torch.randn_like(x) * noise_scale
         out = model(x)
+        if out.requires_grad==False:
+            out.requires_grad=True
         grad = autograd.grad(out.sum(), x, only_inputs=True)[0]
         dynamics = stepsize * grad + noise
         x = x + dynamics
@@ -48,6 +50,8 @@ class EBM(LightningModule):
         self.hidden_dim=hidden_dim
         self.discriminator = self.Discriminator(latent_dim=self.latent_dim,hidden_dim=self.hidden_dim,drop_prob=self.drop_prob)
         self.decoder=decoder
+        self.train_losses=[]
+        self.eval_losses=[]
 
     def training_step(self, batch, batch_idx):
         pos_x=batch
@@ -55,21 +59,43 @@ class EBM(LightningModule):
         neg_x = sample_langevin(neg_x, self.discriminator, 0.01, 50)
         pos_out = self.discriminator(pos_x)
         neg_out = self.discriminator(neg_x)
-        loss = (pos_out - neg_out) + 2 * (pos_out ** 2 + neg_out ** 2)
+        loss = (pos_out - neg_out) + 10 * (pos_out ** 2 + neg_out ** 2)
         loss = loss.mean()
         self.log("train_ebm_loss", loss)
+        self.train_losses.append(loss.item())
         return loss
     
-    '''
+    
     def validation_step(self, batch, batch_idx):
-        x=batch
-        z=self.sample_mesh(torch.zeros(100,self.latent_dim),torch.ones(100,self.latent_dim))
-        loss=L2_loss(batch,z)
-        self.log("val_mmd", loss)
+        had_gradients_enabled = torch.is_grad_enabled()
+        torch.set_grad_enabled(True)
+        pos_x=batch
+        neg_x = torch.randn_like(pos_x)
+        neg_x = sample_langevin(neg_x, self.discriminator, 0.01, 50)
+        pos_out = self.discriminator(pos_x)
+        neg_out = self.discriminator(neg_x)
+        loss = (pos_out - neg_out) + 10 * (pos_out ** 2 + neg_out ** 2)
+        loss = loss.mean()
+        self.log("train_ebm_loss", loss)
+        self.eval_losses.append(loss.item())
+        torch.set_grad_enabled(had_gradients_enabled)
         return loss
-    '''
+    
     def test_step(self, batch, batch_idx):
-        return 0
+        had_gradients_enabled = torch.is_grad_enabled()
+        torch.set_grad_enabled(True)
+        pos_x=batch
+        neg_x = torch.randn_like(pos_x)
+        neg_x = sample_langevin(neg_x, self.discriminator, 0.01, 50)
+        pos_out = self.discriminator(pos_x)
+        neg_out = self.discriminator(neg_x)
+        loss = (pos_out - neg_out) + 10 * (pos_out ** 2 + neg_out ** 2)
+        loss = loss.mean()
+        self.log("train_ebm_loss", loss)
+        self.eval_losses.append(loss.item())
+        torch.set_grad_enabled(had_gradients_enabled)
+        return loss
+
     def get_latent(self,data):
         return self.encoder.forward(data)
     

@@ -1,4 +1,6 @@
+from typing import Any, Optional
 from pytorch_lightning import LightningModule
+from pytorch_lightning.utilities.types import STEP_OUTPUT
 from torch import nn
 from models.basic_layers.encoder import Encoder_base
 from models.basic_layers.decoder import Decoder_base
@@ -54,6 +56,8 @@ class AAE(LightningModule):
         self.decoder = self.Decoder(latent_dim=self.latent_dim,hidden_dim=self.hidden_dim ,data_shape=self.data_shape,drop_prob=self.drop_prob,pca=self.pca,batch_size=batch_size,barycenter=self.barycenter)
         self.discriminator=self.Discriminator(data_shape=self.data_shape, latent_dim=self.latent_dim,hidden_dim=self.hidden_dim,drop_prob=drop_prob)
         self.automatic_optimization = False
+        self.train_losses=[]
+        self.eval_losses=[]
 
     def training_step(self, batch, batch_idx):
         x=batch
@@ -76,6 +80,7 @@ class AAE(LightningModule):
         self.manual_backward(tot_loss)
         self.clip_gradients(d_opt, gradient_clip_val=0.1)
         d_opt.step()        
+        self.train_losses.append([ae_loss.item(),tot_loss.item()])
         return tot_loss
             
         
@@ -83,14 +88,34 @@ class AAE(LightningModule):
     def get_latent(self,data):
         return self.encoder.forward(data)
     
+    def validation_step(self,batch,batch_idx):
+        x=batch
+        z_enc=self.encoder(x)
+        z_1=torch.randn(len(x), self.latent_dim).type_as(x)
+        x_disc_e=self.discriminator(z_enc)
+        x_disc=self.discriminator(z_1)
+        x_hat=self.decoder(z_enc)
+        x_hat=x_hat.reshape(x.shape)
+        ae_loss = self.ae_hyp*L2_loss(x_hat ,x)+(1-self.ae_hyp)*(CE_loss(x_disc_e,torch.ones_like(x_disc_e)).mean())
+        real_loss = CE_loss(x_disc,torch.ones_like(x_disc)).mean()
+        fake_loss = CE_loss(x_disc_e.detach(),torch.zeros_like(x_disc_e)).mean()
+        tot_loss= (real_loss+fake_loss)/2
+        self.eval_losses.append([ae_loss.item(),tot_loss.item()])
+        return tot_loss 
+
     def test_step(self, batch, batch_idx):
         x=batch
-        z=self.encoder(x)
-        x_hat=self.decoder(z)
+        z_enc=self.encoder(x)
+        z_1=torch.randn(len(x), self.latent_dim).type_as(x)
+        x_disc_e=self.discriminator(z_enc)
+        x_disc=self.discriminator(z_1)
+        x_hat=self.decoder(z_enc)
         x_hat=x_hat.reshape(x.shape)
-        loss = torch.linalg.norm(x-x_hat)/torch.linalg.norm(x)
-        self.log("test_aae_loss", loss)
-        return loss
+        ae_loss = self.ae_hyp*L2_loss(x_hat ,x)+(1-self.ae_hyp)*(CE_loss(x_disc_e,torch.ones_like(x_disc_e)).mean())
+        real_loss = CE_loss(x_disc,torch.ones_like(x_disc)).mean()
+        fake_loss = CE_loss(x_disc_e.detach(),torch.zeros_like(x_disc_e)).mean()
+        tot_loss= (real_loss+fake_loss)/2
+        return tot_loss
 
 
     def configure_optimizers(self):

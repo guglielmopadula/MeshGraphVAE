@@ -38,6 +38,8 @@ class AE(LightningModule):
         self.encoder = self.Encoder(data_shape=self.data_shape, latent_dim=self.latent_dim,hidden_dim=self.hidden_dim,drop_prob=self.drop_prob,batch_size=self.batch_size,pca=self.pca)
         self.decoder = self.Decoder(latent_dim=self.latent_dim,hidden_dim=self.hidden_dim ,data_shape=self.data_shape,drop_prob=self.drop_prob,batch_size=batch_size,barycenter=self.barycenter,pca=self.pca)
         self.automatic_optimization=False
+        self.train_losses=[]
+        self.eval_losses=[]
 
 
     def training_step(self, batch, batch_idx):
@@ -51,6 +53,17 @@ class AE(LightningModule):
         self.manual_backward(loss)
         self.clip_gradients(opt, gradient_clip_val=0.1)
         opt.step()
+        self.train_losses.append(loss.item())
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        x=batch
+        z=self.encoder(x)
+        x_hat=self.decoder(z)
+        x_hat=x_hat.reshape(x.shape)
+        loss = torch.linalg.norm(x-x_hat)/torch.linalg.norm(x)
+        self.log("val_ae_loss", loss)
+        self.eval_losses.append(loss.item())
         return loss
 
     def test_step(self, batch, batch_idx):

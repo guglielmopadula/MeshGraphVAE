@@ -9,7 +9,7 @@ np.random.seed(0)
 
 NUM_SAMPLES=300
 NUM_TRAIN_SAMPLES=250
-parameters=np.load("data/dffd_latent.npy").reshape(NUM_SAMPLES,-1)
+parameters=np.load("data/dffd_latent.npy").reshape(3000,-1)[:300,]
 snapshot_1=np.load("simulations/data/u_data.npy").reshape(NUM_SAMPLES,-1)
 snapshot_2=np.load("simulations/data/energy_data.npy").reshape(NUM_SAMPLES,-1)
 train_index=np.random.choice(NUM_SAMPLES, NUM_TRAIN_SAMPLES, replace=False)
@@ -18,6 +18,7 @@ parameters_train=parameters[train_index]
 parameters_test=parameters[test_index]
 snapshot_1_train=snapshot_1[train_index]
 snapshot_2_train=snapshot_2[train_index]
+
 snapshot_1_test=snapshot_1[test_index]
 snapshot_2_test=snapshot_2[test_index]
 
@@ -32,14 +33,14 @@ db_t={"u": db1, "energy": db2}
 train={"u":[parameters_train,snapshot_1_train],"energy":[parameters_train,snapshot_2_train] }
 test={"u":[parameters_test,snapshot_1_test],"energy":[parameters_test,snapshot_2_test] }
 
+podae=PODAE(POD('svd'),AE([200, 100, 10], [10, 100, 200], nn.Tanh(), nn.Tanh(), 5000))
 
-podae=PODAE(POD('svd'),AE([200, 100, 10], [10, 100, 200], nn.Tanh(), nn.Tanh(), 1000))
 
 approximations = {
-    'RBF': RBF(),
-    'GPR': GPR(),
-    'KNeighbors': KNeighborsRegressor(),
-    'ANN': ANN([2000, 2000], nn.Tanh(), 1000,l2_regularization=0.01,lr=0.0001),
+        'RBF': RBF(),
+        'GPR': GPR(),
+        'KNeighbors': KNeighborsRegressor(),
+        'ANN': ANN([2000, 2000], nn.Tanh(), 1000,l2_regularization=0.03,lr=0.001),
 }
 
 
@@ -71,3 +72,5 @@ for i in range(len(db_t)):
 
 np.save("./simulations/inference_objects/data_rom_err_train.npy",train_error)
 np.save("./simulations/inference_objects/data_rom_err_test.npy",test_error)
+
+
