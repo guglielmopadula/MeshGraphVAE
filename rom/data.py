@@ -9,9 +9,12 @@ np.random.seed(0)
 
 NUM_SAMPLES=300
 NUM_TRAIN_SAMPLES=250
-parameters=np.load("data/dffd_latent.npy").reshape(3000,-1)[:300,]
+parameters=np.load("data/dffd_latent.npy")[:300,].reshape(NUM_SAMPLES,-1)
 snapshot_1=np.load("simulations/data/u_data.npy").reshape(NUM_SAMPLES,-1)
 snapshot_2=np.load("simulations/data/energy_data.npy").reshape(NUM_SAMPLES,-1)
+#snapshot_2=np.tile(snapshot_2, (1, 2))
+print(snapshot_2.shape)
+
 train_index=np.random.choice(NUM_SAMPLES, NUM_TRAIN_SAMPLES, replace=False)
 test_index=np.setdiff1d(np.arange(NUM_SAMPLES),train_index)
 parameters_train=parameters[train_index]
@@ -49,10 +52,13 @@ test_error=np.zeros((2,4))
 
 for approxname, approxclass in approximations.items():
     j=list(approximations.keys()).index(approxname)
+    #rom = ReducedOrderModel(db_t["energy"], podae_e, approxclass)
+    #rom.fit()
     approxclass.fit(train["energy"][0],train["energy"][1])
     train_error[1,j]=np.linalg.norm(approxclass.predict(train["energy"][0]).reshape(-1,1)-train["energy"][1])/np.linalg.norm(train["energy"][1])
     test_error[1,j]=np.linalg.norm(approxclass.predict(test["energy"][0]).reshape(-1,1)-test["energy"][1])/np.linalg.norm(test["energy"][1])
-
+    #train_error[1,j]=np.linalg.norm(rom.predict(train["energy"][0]).reshape(-1,1)-train["energy"][1])/np.linalg.norm(train["energy"][1])
+    #test_error[1,j]=np.linalg.norm(rom.predict(test["energy"][0]).reshape(-1,1)-test["energy"][1])/np.linalg.norm(test["energy"][1])
 
 
 for approxname, approxclass in approximations.items():
@@ -68,7 +74,7 @@ db_t=list(db_t.keys())
 for i in range(len(db_t)):
     for j in range(len(approximations)):
         print("Training error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(train_error[i,j]))
-        print("Test error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(train_error[i,j]))
+        print("Test error of "+str(approximations[j])+" over " + str(db_t[i]) +" is "+str(test_error[i,j]))
 
 np.save("./simulations/inference_objects/data_rom_err_train.npy",train_error)
 np.save("./simulations/inference_objects/data_rom_err_test.npy",test_error)
