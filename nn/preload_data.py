@@ -14,7 +14,7 @@ def getinfo(stl):
     mesh=meshio.read(stl)
     points=mesh.points.astype(np.float32)
     return points
-NUM_SAMPLES=2
+NUM_SAMPLES=600
 points=getinfo("data/bunny_0.ply")
 a=np.zeros((NUM_SAMPLES,points.reshape(-1).shape[0]))
 for i in trange(NUM_SAMPLES):

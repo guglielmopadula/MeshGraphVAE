@@ -83,7 +83,7 @@ class VAE(LightningModule):
         reg=torch.distributions.kl_divergence(q_1, standard_1).mean(dim=1)
         elbo=(reconstruction-self.beta*reg).mean(dim=0)
         elbo_loss=-elbo
-        self.eval_losses.append(reg.mean(dim=0).item())
+        self.eval_losses.append(elbo_loss.mean(dim=0).item())
         return elbo_loss
         
     def test_step(self, batch, batch_idx):
