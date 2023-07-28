@@ -38,9 +38,9 @@ class Data(LightningDataModule):
         self.num_test=num_test
         self.reduced_dimension=reduced_dimension
         self.num_samples=self.num_test+self.num_train
-        barycenter=np.mean(data[0].reshape(-1,3),axis=0)
-        self.barycenter=torch.tensor(barycenter,dtype=torch.float32)
-        self.n_points=data.shape[0]
+        #barycenter=np.mean(data[0].reshape(-1,3),axis=0)
+        self.barycenter=torch.tensor(0)
+        self.n_points=data.shape[1]
         self.data=torch.tensor(data,dtype=torch.float32)
         self.data=self.data[:self.num_samples]
         self.pca=PCA(self.reduced_dimension)

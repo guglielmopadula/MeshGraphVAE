@@ -8,18 +8,11 @@ os.environ["CUBLAS_WORKSPACE_CONFIG"]=":16:8"
 import torch
 from datawrapper.data import Data
 
-from models.AE import AE
-from models.AAE import AAE
-from models.VAE import VAE
-from models.BEGAN import BEGAN
-from models.DM import DM
-from models.EBM import EBM
-from models.NF import NF
-import trimesh
+from training_full import GAE
+import qllr
 import matplotlib.pyplot as plt
 import torch
 import dill
-import scipy
 from tqdm import trange
 import numpy as np
 import meshio
@@ -47,6 +40,21 @@ def area(vertices, triangles):
     a = np.linalg.norm(np.cross(v2 - v1, v3 - v1), axis=1) / 2
     return np.sum(a)
 
+def getinfo(stl):
+    mesh=meshio.read(stl)
+    points=mesh.points.astype(np.float32)
+    return points
+
+tmp=getinfo("data/bunny_{}.ply".format(0))
+bar=np.mean(tmp,axis=0)
+num_points=len(tmp)
+
+
+def matrix(x):
+    A=np.tile(np.eye(3),num_points).reshape(1,3,num_points)
+    A=np.tile(A,(x.shape[0],1,1))
+    return A
+
 
 NUM_WORKERS = int(os.cpu_count() / 2)
 
@@ -67,13 +75,7 @@ with open("nn/saved_models/bayesdisc.pt", 'rb') as in_strm:
 
 disc.eval()
 d={
-  #AE: "AE",
-  #AAE: "AAE",
-  VAE: "VAE", 
-  #BEGAN: "BEGAN",
-  #DM: "DM",
-  #EBM:"EBM",
-  #NF:"NF" 
+  GAE: "GAE", 
   }
 
 data=Data(batch_size=BATCH_SIZE,num_train=NUM_TRAIN_SAMPLES,
@@ -109,9 +111,16 @@ data=data.data[:].cpu().numpy().reshape(NUMBER_SAMPLES,-1)
 moment_tensor_data=np.zeros((NUMBER_SAMPLES,3,3))
 area_data=np.zeros(NUMBER_SAMPLES)
 _=0
+lin_indices=[i for i in range(3*num_points)]
+
+transformer=qllr.QLLR(matrix,bar,lin_indices,[])
 print(data.reshape(NUMBER_SAMPLES,-1,3).shape)
 data2=data.copy()
+data2=transformer.inverse_transform(data2)
 data2=data2.reshape(NUMBER_SAMPLES,-1,3)
+
+
+
 #print(np.mean(data2,axis=1))
 #data2=data2-np.mean(data2,axis=1).reshape(NUMBER_SAMPLES,1,3).repeat(data2.shape[1],axis=1)
 for j in range(3):
@@ -126,13 +135,16 @@ for wrapper, name in d.items():
     torch.manual_seed(100)
     np.random.seed(100)
     temp=np.zeros(data.shape)
+    model=GAE()
     model=torch.load("./nn/saved_models/"+name+".pt",map_location=torch.device('cpu'))
     model.eval()
     tmp,z=model.sample_mesh()
+    tmp=transformer.inverse_transform(tmp)
     latent_space=torch.zeros(NUMBER_SAMPLES,np.prod(z.shape))
     error=0
     for i in trange(NUMBER_SAMPLES):
         tmp,z=model.sample_mesh()
+        tmp=transformer.inverse_transform(tmp)
         latent_space[i]=z
         tmp=tmp.cpu().detach().numpy().reshape(-1,3)
         tmp=tmp.reshape(-1,3)

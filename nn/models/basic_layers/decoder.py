@@ -25,6 +25,6 @@ class Decoder_base(nn.Module):
     def forward(self, z):
         tmp=self.fc_interior_7(self.fc_interior_6(self.fc_interior_5(self.fc_interior_4(self.fc_interior_3(self.fc_interior_2(self.fc_interior_1(z)))))))
         z=self.pca.inverse_transform(tmp)
-        z=self.doublec(z)
+        #z=self.doublec(z)
         return z
  

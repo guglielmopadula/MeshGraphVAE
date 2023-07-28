@@ -4,10 +4,10 @@ from cpffd import *
 from tqdm import trange
 NUM_SAMPLES=600
 np.random.seed(0)
-p=np.load("data/points.npy")
-print(p.dtype)
+mesh=meshio.read("Bunny_red_0.stl")
+p=mesh.points.astype(np.float32)
+np.save("data/triangles.npy",mesh.cells_dict["triangle"])
 np.random.seed(0)
-triangles=np.load("data/tetras.npy")
 def scale_normalize(points):
     minim=np.min(points,axis=0)
     points=points-minim
