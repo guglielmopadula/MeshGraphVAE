@@ -42,6 +42,8 @@ for i in trange(NUM_SAMPLES):
     latent[i,2]=vpffd.array_mu_z[:,:,1:].reshape(-1)
     pdef=vpffd.barycenter_ffd_adv(p,M,indices_c)
     pdef=restore(pdef,scale,minim)
+    pdef=pdef-np.mean(pdef,axis=0)
+    print(np.mean(pdef,axis=0))
     meshio.write_points_cells("data/bunny_{}.ply".format(i),pdef,[])
 
 
